@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_23_190246) do
+ActiveRecord::Schema.define(version: 2021_01_31_132147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -247,6 +248,29 @@ ActiveRecord::Schema.define(version: 2020_11_23_190246) do
     t.index ["course_id"], name: "index_evaluation_criteria_on_course_id"
   end
 
+  create_table "event_store_events", id: :serial, force: :cascade do |t|
+    t.uuid "event_id", null: false
+    t.string "event_type", null: false
+    t.binary "metadata"
+    t.binary "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "valid_at"
+    t.index ["created_at"], name: "index_event_store_events_on_created_at"
+    t.index ["event_id"], name: "index_event_store_events_on_event_id", unique: true
+    t.index ["event_type"], name: "index_event_store_events_on_event_type"
+    t.index ["valid_at"], name: "index_event_store_events_on_valid_at"
+  end
+
+  create_table "event_store_events_in_streams", id: :serial, force: :cascade do |t|
+    t.string "stream", null: false
+    t.integer "position"
+    t.uuid "event_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["created_at"], name: "index_event_store_events_in_streams_on_created_at"
+    t.index ["stream", "event_id"], name: "index_event_store_events_in_streams_on_stream_and_event_id", unique: true
+    t.index ["stream", "position"], name: "index_event_store_events_in_streams_on_stream_and_position", unique: true
+  end
+
   create_table "faculty", id: :serial, force: :cascade do |t|
     t.string "category"
     t.integer "sort_index"
@@ -263,6 +287,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_190246) do
     t.string "connect_link"
     t.boolean "notify_for_submission", default: false
     t.boolean "exited", default: false
+    t.string "coaching_session_calendly_link"
     t.index ["category"], name: "index_faculty_on_category"
     t.index ["user_id"], name: "index_faculty_on_user_id"
   end
