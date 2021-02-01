@@ -33,13 +33,10 @@ class CreatePostMutator < ApplicationQuery
         post_number: post_number
       )
 
-      # Send a notification mail to addressee only if she isn't replying to herself.
-      UserMailer.new_post(post, addressee).deliver_later if addressee.present? && current_user != addressee
-
-      Notifications::PostCreatedJob.perform_later(current_user.id, post.id)
-
       # Update the topic's last activity time.
       topic.update!(last_activity_at: Time.zone.now)
+
+      publish_event(post)
 
       post
     end
@@ -53,10 +50,6 @@ class CreatePostMutator < ApplicationQuery
     @community ||= topic&.community
   end
 
-  def addressee
-    reply_to_post&.creator || topic.creator
-  end
-
   def topic
     @topic ||= Topic.find_by(id: topic_id)
   end
@@ -67,5 +60,15 @@ class CreatePostMutator < ApplicationQuery
 
   def post_number
     topic.posts.maximum(:post_number) + 1
+  end
+
+  def event_store
+    Rails.configuration.event_store
+  end
+
+  def publish_event(post)
+    event = Communities::PostCreated.new(data: { post_id: post.id })
+    stream_name = "school$#{current_school.id}"
+    event_store.publish(event, stream_name: stream_name)
   end
 end
