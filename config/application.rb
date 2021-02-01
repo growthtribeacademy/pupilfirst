@@ -12,6 +12,7 @@ Bundler.require(*Rails.groups)
 
 module Pupilfirst
   class Application < Rails::Application
+    config.paths.add 'communities/lib', eager_load: true
     VERSION = '2021.1'
 
     # Initialize configuration defaults for originally generated Rails version.
