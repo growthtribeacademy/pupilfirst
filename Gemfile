@@ -49,7 +49,7 @@ gem 'titleize', '~> 1.4' # better titleizing, modifies Inflector.titleize from d
 gem 'reform', '~> 2.2' # Form objects decoupled from models. http://www.trailblazer.to/gems/reform
 gem 'reform-rails', '~> 0.1'
 gem 'virtus', '~> 1.0' # Required for reform coercion. Attributes on Steroids for Plain Old Ruby Objects
-gem 'dry-validation', '~> 0.10' # There seems to be a dependency bug in reform's coercion code - it required dry-types.
+gem 'dry-validation', '~> 1.6.0' # There seems to be a dependency bug in reform's coercion code - it required dry-types.
 gem 'postmark-rails', '~> 0.19' # Official integration library for using Rails and ActionMailer with the Postmark HTTP API.
 gem 'jspdf-rails', '~> 1.0' # HTML5 client-side pdf generation - for certificates
 gem 'responders', '~> 3.0' # A set of Rails responders to dry up your application (respond_to / with)
@@ -77,6 +77,8 @@ gem 'i18n-js', '~> 3.7' # Provide Rails I18n translations on Javascript.
 gem 'batch-loader', '~> 1.5' # Generic lazy batching mechanism to avoid N+1 DB queries.
 
 gem 'rails_event_store'
+gem 'dry-struct', '~> 1.4.0'
+gem 'dry-types', '~> 1.5.0'
 
 # Rails assets!
 source 'https://rails-assets.org' do
