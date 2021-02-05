@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  postgres_data:
+  local_data:
     driver: local
 
 services:
@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - local_data:/var/lib/postgresql/data
       - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
     environment:
       - POSTGRES_USER=postgres
@@ -35,3 +35,38 @@ services:
       - './keycloak/realm.json:/tmp/keycloak_realms/realm.json'
     depends_on:
       - postgres
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+  lrs:
+    image: learninglocker/xapi-service
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=production
+      - SITE_URL=http://lrs.localhost
+      - UI_PORT=3000
+      - API_PORT=8090
+      - APP_SECRET=oximaw873ynrxc98w74ynxqo8we47mqv0984emq90348um203948mc20r9384u0mr9834mr
+      - MONGODB_PATH=mongodb://mongo:27017/learninglocker_v2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - LOG_MIN_LEVEL=debug
+      - WINSTON_CLOUDWATCH_ENABLED=false
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=576
+      - SMTP_SECURED=false
+      - SMTP_USER=example@gmail.com
+      - SMTP_PASS=test123
+      - QUEUE_PROVIDER=REDIS
+      - FS_REPO=local
+      - MAX_TRIP_COUNT=15
+      - EXPRESS_PORT=8081
+      - MONGO_URL=mongodb://mongo:27017/learninglocker_v2
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_REPO=local
+    depends_on:
+      - mongo
+      - redis
+    restart: always
