@@ -21,11 +21,19 @@ module Users
 
     def valid_request?
       return false if user.blank?
-
       return false if user.reset_password_sent_at.blank?
 
+      valid_time?
+    end
+
+    def valid_time?
       time_since_last_mail = Time.zone.now - user.reset_password_sent_at
-      time_since_last_mail < 30.minutes
+      time_since_last_mail < time_limit_minutes
+    end
+
+    def time_limit_minutes
+      time_limit = ENV.fetch('RESET_PASSWORD_TOKEN_TIME_LIMIT', '30').to_i
+      time_limit.positive? ? time_limit.minutes : 30.minutes
     end
   end
 end

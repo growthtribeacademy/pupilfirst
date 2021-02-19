@@ -14,7 +14,7 @@ Rails.application.config.content_security_policy do |policy|
   end
 
   def typeform_csp
-    { frame: ['https://svlabs.typeform.com', 'https://form.typeform.com'] }
+    { frame: 'https://form.typeform.com' }
   end
 
   def slideshare_csp
@@ -71,11 +71,14 @@ Rails.application.config.content_security_policy do |policy|
     %w[fullstory.com *.fullstory.com]
   end
 
+  def usetiful_csp
+    %w[usetiful.com *.usetiful.com]
+  end
+
   def frame_sources
     [
-      'https://sv-co-public-slackin.herokuapp.com', 'https://www.google.com', 'https://calendly.com',
-      *typeform_csp[:frame], youtube_csp[:frame], vimeo_csp[:frame], *slideshare_csp[:frame], *speakerdeck_csp[:frame],
-      *google_form_csp[:frame], facebook_csp[:frame], *hotjar_form_csp
+      'https://www.google.com', typeform_csp[:frame], youtube_csp[:frame], vimeo_csp[:frame], *slideshare_csp[:frame], *speakerdeck_csp[:frame], *google_form_csp[:frame], facebook_csp[:frame],
+       *hotjar_form_csp, *usetiful_csp, 'https://calendly.com'
     ]
   end
 
@@ -93,6 +96,8 @@ Rails.application.config.content_security_policy do |policy|
   policy.frame_src :data, *frame_sources
   policy.media_src :self, *media_sources
   policy.object_src :self
+  policy.worker_src :self
+  policy.manifest_src :self
 end
 
 # If you are using UJS then enable automatic nonce generation

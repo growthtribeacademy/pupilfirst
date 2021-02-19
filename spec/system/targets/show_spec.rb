@@ -122,7 +122,7 @@ feature 'Target Overlay', js: true do
     expect(last_submission.checklist).to eq([{ 'kind' => Target::CHECKLIST_KIND_LONG_TEXT, 'title' => 'Write something about your submission', 'result' => long_answer, 'status' => TimelineEvent::CHECKLIST_STATUS_NO_ANSWER }])
 
     # The status should also be updated on the dashboard page.
-    click_button 'Close'
+    click_button 'Back'
 
     within("a[aria-label='Select Target #{target_l1.id}'") do
       expect(page).to have_content('Pending Review')
@@ -185,7 +185,7 @@ feature 'Target Overlay', js: true do
       expect(page).to have_selector('.course-overlay__header-title-card', text: 'Completed')
 
       # Since this is a team target, other students shouldn't be listed as pending.
-      expect(page).not_to have_content('You have team members who are yet to complete this target')
+      expect(page).not_to have_content('You have team members who are yet to complete this lesson')
 
       # Target should have been marked as passed in the database.
       expect(target_l1.status(student)).to eq(Targets::StatusService::STATUS_PASSED)
@@ -394,7 +394,7 @@ feature 'Target Overlay', js: true do
       # A safety check, in case factory is altered.
       expect(other_students.count).to be > 0
 
-      expect(page).to have_content('You have team members who are yet to complete this target:')
+      expect(page).to have_content('You have team members who are yet to complete this lesson:')
 
       # The other students should also be listed.
       other_students.each do |other_student|
@@ -564,13 +564,13 @@ feature 'Target Overlay', js: true do
     # The level selected in the curriculum list underneath should always match the target.
     sign_in_user student.user, referrer: target_path(target_l0)
 
-    click_button('Close')
+    click_button('Back')
 
     expect(page).to have_text(target_group_l0.name)
 
     visit target_path(target_l2)
 
-    click_button('Close')
+    click_button('Back')
 
     expect(page).to have_text(target_group_l2.name)
   end
@@ -586,6 +586,7 @@ feature 'Target Overlay', js: true do
         sign_in_user school_admin.user, referrer: target_path(target_l1)
 
         expect(page).to have_content('You are currently looking at a preview of this course.')
+        expect(page).to have_link('Edit Content', href: content_school_course_target_path(course_id: target_l1.course.id, id: target_l1.id))
 
         # This target should have a 'Complete' section.
         find('.course-overlay__body-tab-item', text: 'Complete').click

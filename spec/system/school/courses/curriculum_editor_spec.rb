@@ -45,12 +45,14 @@ feature 'Curriculum Editor', js: true do
   end
 
   scenario 'admin creates a basic course framework by adding level, target group and targets' do
-    sign_in_user school_admin.user, referrer: curriculum_school_course_path(course)
+    sign_in_user school_admin.user, referrer: curriculum_school_course_path(course, level: 1)
 
-    # he should be on the last level
-    expect(page).to have_text('Chapter 2: ' + level_2.name)
+    # When the level number is specified as a param, it should be selected.
+    expect(page).to have_text(target_group_1.name)
 
-    # all targets and target groups on that level should be visible
+    visit(curriculum_school_course_path(course))
+
+    # Visiting the page without the level param should default selection to the max level, with all is targets and groups visible.
     expect(page).to have_text(target_group_2.name)
     expect(page).to have_text(target_3.title)
     expect(page).to have_text(target_4.title)
@@ -149,7 +151,7 @@ feature 'Curriculum Editor', js: true do
     fill_in "create-target-input#{target_group.id}", with: new_target_1_title
     click_button 'Create'
 
-    expect(page).to have_text('Target created successfully')
+    expect(page).to have_text('Lesson created successfully')
     dismiss_notification
 
     target = target_group.reload.targets.last
@@ -190,7 +192,7 @@ feature 'Curriculum Editor', js: true do
     fill_in "create-target-input#{target_group_2.id}", with: new_target_1_title
     click_button 'Create'
 
-    expect(page).to have_text('Target created successfully')
+    expect(page).to have_text('Lesson created successfully')
 
     dismiss_notification
   end
@@ -218,7 +220,7 @@ feature 'Curriculum Editor', js: true do
 
       find('button[title="Edit selected chapter"').click
       click_button 'Actions'
-      select "L1: #{level_1.name}", from: 'Delete & Merge Into'
+      select "C1: #{level_1.name}", from: 'Delete & Merge Into'
 
       accept_confirm do
         click_button 'Merge and Delete'
@@ -235,7 +237,7 @@ feature 'Curriculum Editor', js: true do
 
       find('button[title="Edit selected chapter"').click
       click_button 'Actions'
-      expect(page).not_to have_text("L0: #{level_0.name}")
+      expect(page).not_to have_text("C0: #{level_0.name}")
     end
   end
 
@@ -243,10 +245,10 @@ feature 'Curriculum Editor', js: true do
     sign_in_user school_admin.user, referrer: curriculum_school_course_path(course)
     find('.target-group__header', text: target_group_2.name).click
 
-    expect(page).to have_text("Level #{target_group_2.level.number}: #{target_group_2.level.name}")
+    expect(page).to have_text("Chapter #{target_group_2.level.number}: #{target_group_2.level.name}")
 
     fill_in 'level_id', with: level_1.name
-    click_button "Pick Level 1: #{level_1.name}"
+    click_button "Pick Chapter 1: #{level_1.name}"
 
     click_button 'Update Section'
     expect(page).to have_text('Section updated successfully')
