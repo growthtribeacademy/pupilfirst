@@ -162,38 +162,6 @@ feature 'School students index', js: true do
 
       expect(student_1.startup.tag_list).to contain_exactly('Abc', 'Def')
       expect(student_2.startup.tag_list).to contain_exactly('Abc', 'Def', 'GHI JKL')
-
-      open_email(student_1_user.email)
-
-      expect(current_email.subject).to include("You have been added as a student in #{school.name}")
-      expect(current_email.body).to have_link('Set first password')
-
-      open_email(student_2_user.email)
-
-      expect(current_email.subject).to include("You have been added as a student in #{school.name}")
-
-      open_email(student_3_user.email)
-
-      expect(current_email.subject).to include("You have been added as a student in #{school.name}")
-
-      open_email(student_4_user.email)
-
-      expect(current_email.subject).to include("You have been added as a student in #{school.name}")
-    end
-
-    scenario 'school admin adds a student after disabling the notify option' do
-      sign_in_user school_admin.user, referrer: school_course_students_path(course)
-
-      click_button 'Add New Students'
-      fill_in 'Name', with: name_1
-      fill_in 'Email', with: email_1
-      click_button 'Add to List'
-      page.find('label', text: 'Notify students, and send them a link to sign into this school.').click
-      click_button 'Save List'
-
-      expect(page).to have_text('All students were created successfully')
-      open_email(email_1)
-      expect(current_email).to eq(nil)
     end
 
     context 'when adding a student who is already a user of another type' do
@@ -227,11 +195,6 @@ feature 'School students index', js: true do
         expect(coach_user.name).to eq(original_name)
         expect(coach_user.title).to eq(title)
         expect(coach_user.affiliation).to eq(affiliation)
-
-        open_email(coach_user.email)
-
-        expect(current_email.subject).to include("You have been added as a student in #{school.name}")
-        expect(current_email.body).to have_link('Set first password')
       end
     end
 
@@ -730,4 +693,3 @@ feature 'School students index', js: true do
     end
   end
 end
-

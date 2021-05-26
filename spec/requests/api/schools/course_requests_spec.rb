@@ -122,7 +122,7 @@ module Api
           expect(course.school.founder_tags.pluck(:name)).to match_array(['tag 1', 'tag 2'])
         end
 
-        it 'always notify registered students' do
+        it 'newer notify registered students' do
           params = {
             students: [
               {name: 'Test1', email: 'test1@test.com'},
@@ -131,7 +131,7 @@ module Api
           }
           form = Students::CreateForm.new(Reform::OpenForm.new)
           allow(Students::CreateForm).to receive(:new) { form }
-          expect(::Courses::AddStudentsService).to receive(:new).with(course, hash_including(notify: true)) { form }
+          expect(::Courses::AddStudentsService).to receive(:new).with(course, hash_including(notify: false)) { form }
           post "/api/schools/courses/#{course.id}/students", params: params, headers: headers
         end
       end
