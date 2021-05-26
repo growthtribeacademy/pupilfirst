@@ -22,7 +22,7 @@ module Api
         end
 
         def save
-          ::Courses::AddStudentsService.new(course, notify: true).add(students)
+          ::Courses::AddStudentsService.new(course, notify: false).add(students)
         end
 
         private
