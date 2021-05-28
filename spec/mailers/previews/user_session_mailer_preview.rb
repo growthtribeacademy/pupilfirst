@@ -11,9 +11,23 @@ class UserSessionMailerPreview < ActionMailer::Preview
     # Or, a school without a logo.
     # school = School.find_by(name: 'Demo')
 
-    host = school.present? ? school.domains.primary.fqdn : 'www.pupilfirst.localhost'
-    login_url = Rails.application.routes.url_helpers.user_token_url(token: 'LOGIN_TOKEN', host: host, protocol: 'https')
+    user = Founder.last.user
+    UserSessionMailer.send_login_token(user, school)
+  end
 
-    UserSessionMailer.send_login_token('johndoe@example.com', school, login_url)
+  def set_first_password_token
+    school = School.first
+    user = school.users.first
+    first_password_url = 'https://example.com/password_url'
+
+    UserSessionMailer.set_first_password_token(user, school, first_password_url)
+  end
+
+  def send_reset_password_token
+    school = School.first
+    email = school.users.first.email
+    reset_password_url = 'https://example.com/reset_password_url'
+
+    UserSessionMailer.send_reset_password_token(email, school, reset_password_url)
   end
 end

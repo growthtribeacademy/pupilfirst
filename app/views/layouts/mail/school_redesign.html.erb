@@ -1,0 +1,138 @@
+<% presenter = MailerPresenter.new(self, @school, course: @course) %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+      <!--[if !mso]><!-->
+      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+      <!--<![endif]-->
+      <!--[if (gte mso 9)|(IE)]>
+      <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG/>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+      </xml>
+      <![endif]-->
+      <!--[if (gte mso 9)|(IE)]>
+  <style type="text/css">
+    body {width: 600px;margin: 0 auto;}
+    table {border-collapse: collapse;}
+    table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+    img {-ms-interpolation-mode: bicubic;}
+  </style>
+<![endif]-->
+
+  <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Montserrat:500,700' %>
+
+</style><!--End Head user entered-->
+  <%= stylesheet_link_tag 'mailer_redesign' %>
+    </head>
+    <body>
+      <center class="wrapper" data-link-color="#46b4a5" data-body-style="font-size:15px; font-family:inherit; color:#333333; background-color:#e6f0fa;">
+        <div class="webkit">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%" class="wrapper" bgcolor="#e6f0fa">
+            <tr>
+              <td valign="top" bgcolor="#e6f0fa" width="100%">
+                <table width="100%" role="content-container" class="outer" align="center" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td width="100%">
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td>
+                            <!--[if mso]>
+    <center>
+    <table><tr><td width="600">
+  <![endif]-->
+                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px;" align="center">
+                                      <tr>
+                                        <td role="modules-container" style="padding:30px 30px 30px 30px; color:#333333; text-align:left;" bgcolor="#FFFFFF" width="100%" align="left"><table class="module preheader preheader-hide" role="module" data-type="preheader" border="0" cellpadding="0" cellspacing="0" width="100%" style="display: none !important; mso-hide: all; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;">
+    <tr>
+      <td role="module-content">
+        <p></p>
+      </td>
+    </tr>
+  </table><table class="wrapper" role="module" data-type="image" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="fb59e0ce-ba73-477f-9cab-9ad4fbb638e9">
+    <tbody>
+      <tr>
+        <td style="font-size:6px; line-height:10px; padding:0px 0px 0px 0px;" valign="top" align="center">
+          <img class="max-width" border="0" style="display:block; color:#000000; text-decoration:none; font-family:Helvetica, arial, sans-serif; font-size:16px; max-width:60% !important; width:60%; height:auto !important;" width="324" alt="" data-proportionally-constrained="true" data-responsive="true" src="http://cdn.mcauto-images-production.sendgrid.net/e488399a4c57279c/52b24352-9857-49fb-9eda-dace3c29bbe2/600x178.png">
+        </td>
+      </tr>
+    </tbody>
+  </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="93b970db-b9e0-40cc-bda3-8c7bbc5a20f0" data-mc-module-version="2019-10-22">
+          <% if content_for?(:title) || content_for?(:subtitle) || content_for?(:title_button_text) %>
+            <div class="mailer-body__table">
+
+            <tr>
+              <td class="mailer-body__hero">
+                <% if content_for?(:title) %>
+                  <h1 class="<%= presenter.hero_title_classes %>"><%= yield :title %></h1>
+                <% end %>
+                <% if content_for?(:subtitle) %>
+                  <p class="mailer-body__hero-subtitle"><%= yield :subtitle %></p>
+                <% end %>
+
+                <% if content_for?(:title_button_text) %>
+                  <a class="mailer-button" href="<%= yield(:title_button_link) %>" title="<%= presenter.school_name %>" target="_blank" rel='noopener'>
+                    <%= yield :title_button_text %>
+                  </a>
+                <% end %>
+              </td>
+            </tr>
+            </div>
+          <% end %>
+
+    <tbody>
+      <tr>
+        <td style="padding:18px 0px 18px 0px; line-height:22px; text-align:inherit;" height="100%" valign="top" bgcolor="" role="module-content"><div><div style="font-family: inherit; text-align: inherit"><span style="color: #333333; font-size: 15px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline; font-family: inherit"></span></div><b><%= yield :salutation %></b></div></td>
+      </tr>
+    </tbody>
+
+
+
+
+ 
+
+  </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="d14230e4-6e01-44c3-a644-bbbf9a31cc52" data-mc-module-version="2019-10-22">
+    <%= yield :body %>
+    <p><b>The Growth Tribe Team</b></p>
+
+  </table><table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="c44f966f-57ce-42d8-9bf6-c6195e58c9a7.1">
+    <tbody>
+      <tr>
+        <td style="padding:20px 0px 20px 0px;" role="module-content" height="100%" valign="top" bgcolor="">
+          <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" height="2px" style="line-height:2px; font-size:2px;">
+            <tbody>
+              <tr>
+                <td style="padding:0px 0px 2px 0px;" bgcolor="#e6f0fa"></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table></td>
+                                      </tr>
+                                    </table>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                            </center>
+                            <![endif]-->
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </center>
+    </body>
+  </html>
