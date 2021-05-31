@@ -30,7 +30,7 @@ describe Courses::AddStudentsService do
 
       email_subject = current_email.subject
 
-      expect(email_subject).to eq("You have been added as a student in #{course.school.name}")
+      expect(email_subject).to eq("Activate your account at Growth Tribe")
 
       # Check if students are teamed up correctly
       new_team = Startup.find_by(name: 'new_team')

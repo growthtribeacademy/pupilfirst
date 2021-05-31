@@ -63,7 +63,7 @@ feature 'Course students bulk importer', js: true do
     # Check student notification
     open_email('super@man.com')
 
-    expect(current_email.subject).to have_content("You have been added as a student in #{school.name}")
+    expect(current_email.subject).to have_content("Activate your account at Growth Tribe")
   end
 
   scenario 'admin onboards students with notification unchecked' do
