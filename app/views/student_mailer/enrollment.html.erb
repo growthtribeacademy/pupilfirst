@@ -33,14 +33,16 @@
       <tr>
         <td style="padding:18px 0px 18px 0px; line-height:22px; text-align:inherit;" height="100%" valign="top" bgcolor="" role="module-content"><div><div style="font-family: inherit; text-align: inherit"><span style="color: #333333; font-size: 15px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline; font-family: inherit">Time dedication is key, so it’s important to plan for the following:</span></div>
             <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">👉Course Run-time: <%= "#{@course_start_date ? @course_start_date.strftime('%H:%M %B %-d, %Y') : '...'}  - #{@course_end_date&.strftime('%H:%M %B %-d, %Y')}" %>.</span></div>
-            <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">👉The live sessions will run biweekly on {{weekDay}}, starting on {{startDay}}, from {{sessionStartEndTimes}}.&nbsp;</span></div>
-            <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">👉Please mark your calendar with the live stream session dates outlined below:&nbsp;</span></div>
-            <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">{{#each bookingDates}}</span></div>
-            <ul>
-              <li style="text-align: inherit; font-family: inherit"><span style="font-family: inherit">{{this}}</span></li>
-            </ul>
-            <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">{{/each}}</span></div>
-            <div style="font-family: inherit; text-align: inherit"><br></div>
+            <%- if @course_start_date %>
+              <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">👉The live sessions will run biweekly on <%= @course_start_date.strftime("%A") %> , starting on <%= @course_start_date.strftime("%B %-d, %Y") %> , from <%= @course_start_date.strftime("%H:%M") %> .&nbsp;</span></div>
+              <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">👉Please mark your calendar with the live stream session dates outlined below:&nbsp;</span></div>
+              <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">{{#each bookingDates}}</span></div>
+              <ul>
+                <li style="text-align: inherit; font-family: inherit"><span style="font-family: inherit">{{this}}</span></li>
+              </ul>
+              <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">{{/each}}</span></div>
+              <div style="font-family: inherit; text-align: inherit"><br></div>
+            <%- end %>
             <div style="font-family: inherit; text-align: inherit"><span style="font-family: inherit">Please reserve a minimum of 10 hours between bi-weekly live teaching sessions for coaching, working on your project, and on-demand learning content.</span></div><div></div></div></td>
       </tr>
     </tbody>
