@@ -24,6 +24,6 @@ class UserSessionMailer < SchoolMailer
 
     @first_password_url = first_password_url
 
-    simple_roadie_mail(@user.email, "You have been added as a student in #{@school.name}")
+    simple_roadie_mail(@user.email, "Activate your account at Growth Tribe")
   end
 end
