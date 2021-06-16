@@ -75,7 +75,7 @@ let make = (~team, ~teamTags, ~updateCB) => {
       {(isSingleStudent ? "Tags applied:" : "Tags applied to team:") |> str}
     </div>
     <DisablingCover disabled=state.saving message="Saving...">
-      <StudentsEditor__SearchableTagList
+      <School__SearchableTagList
         unselectedTags={teamTags |> Js.Array.filter(tag =>
           !(state.tagsToApply |> Array.mem(tag))
         )}

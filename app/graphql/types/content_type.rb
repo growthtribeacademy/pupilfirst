@@ -1,6 +1,6 @@
 module Types
   class ContentType < Types::BaseUnion
-    possible_types Types::ImageBlockType, Types::FileBlockType, Types::MarkdownBlockType, Types::EmbedBlockType,
+    possible_types Types::ImageBlockType, Types::FileBlockType, Types::MarkdownBlockType, Types::EmbedBlockType, Types::AudioBlockType,
       Types::CoachingSessionBlockType, Types::PdfDocumentBlockType, Types::CommunityWidgetBlockType
 
     def self.resolve_type(object, _context)
@@ -19,6 +19,8 @@ module Types
           Types::PdfDocumentBlockType
         when ContentBlock::BLOCK_TYPE_COMMUNITY_WIDGET
           Types::CommunityWidgetBlockType
+        when ContentBlock::BLOCK_TYPE_AUDIO
+          Types::AudioBlockType
       end
     end
   end
