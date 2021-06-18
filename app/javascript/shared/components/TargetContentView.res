@@ -7,6 +7,7 @@ let renderBlockClasses = block =>
   | Markdown(_) => "mt-6"
   | File(_) => "mt-6"
   | Image(_) => "mt-6"
+  | Audio(_) => "mt-6"
   | Embed(_) => "mt-6 pb-7"
   | CoachingSession(_) => "mt-6 pb-7"
   | PdfDocument(_) => "mt-6"
@@ -108,6 +109,8 @@ let pdfDocumentContentBlock = (url, title, filename) =>
 
 let communityWidgetContentBlock = (id, kind, slug) => <Tribe id kind slug />
 
+let audioContentBlock = url => <audio src=url controls=true />
+
 @react.component
 let make = (~contentBlocks, ~coaches=?) =>
   <div className="text-base" id="learn-component">
@@ -121,6 +124,7 @@ let make = (~contentBlocks, ~coaches=?) =>
       | CoachingSession(_lastResolvedAt) => coachingSessionBlock(coaches)
       | PdfDocument(url, title, filename) => pdfDocumentContentBlock(url, title, filename)
       | CommunityWidget(kind, slug) => communityWidgetContentBlock(block |> ContentBlock.id, kind, slug)
+      | Audio(url, _title, _filename) => audioContentBlock(url)
       }
 
       <div className={renderBlockClasses(block)} key={block |> ContentBlock.id}>

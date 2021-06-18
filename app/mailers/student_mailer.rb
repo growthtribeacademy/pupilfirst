@@ -7,6 +7,9 @@ class StudentMailer < SchoolMailer
     @course_start_date = @levels.pluck(:unlock_at).min
     @course_end_date = @course.ends_at
 
-    simple_roadie_mail(@student.email, "You have been added as a student in #{@school.name}")
+    simple_roadie_mail(
+      @student.email,
+      "You have been added as a student in #{@school.name}"
+    )
   end
 end

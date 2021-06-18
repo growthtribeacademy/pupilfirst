@@ -223,6 +223,7 @@ let onSave = (contentBlock, updateContentBlockCB, setDirtyCB, send, event) => {
     let extractor = result => result["updateCommunityWidgetBlock"]["contentBlock"]
     updateContentBlockBlock(mutation, extractor, updateContentBlockCB, setDirtyCB, send)
   | CoachingSession(_)
+  | Audio(_)
   | Embed(_) => raise(InvalidBlockTypeForUpdate)
   }
 }
@@ -255,6 +256,7 @@ let innerEditor = (originalContentBlock, contentBlock, setDirtyCB, state, send) 
     <CurriculumEditor__MarkdownBlockEditor markdown contentBlock updateContentBlockCB />
   | File(url, title, filename) =>
     <CurriculumEditor__FileBlockEditor url title filename contentBlock updateContentBlockCB />
+  | Audio(url, _title, _filename) => <audio controls=true src=url />
   | Image(url, caption, width) =>
     <CurriculumEditor__ImageBlockEditor width url caption contentBlock updateContentBlockCB />
   | PdfDocument(url, title, filename) =>

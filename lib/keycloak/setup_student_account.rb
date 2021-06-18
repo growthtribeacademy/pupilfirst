@@ -1,3 +1,5 @@
+require_relative '../../app/jobs/application_job'
+
 module Keycloak
   class SetupStudentAccount
     class Job < ApplicationJob

@@ -27,6 +27,7 @@ type blockType =
   | CoachingSession(lastResolvedAt)
   | PdfDocument(url, title, filename)
   | CommunityWidget(kind, slug)
+  | Audio(url, title, filename)
 
 type rec t = {
   id: id,
@@ -150,6 +151,11 @@ let decode = json => {
   | "community_widget" =>
     let (kind, slug) = json |> field("content", decodeCommunityWidgetContent)
     CommunityWidget(kind, slug)
+  | "audio" =>
+    let title = field("content", decodeFileContent, json)
+    let url = field("fileUrl", string, json)
+    let filename = field("filename", string, json)
+    Audio(url, title, filename)
   | unknownBlockType => raise(UnexpectedBlockType(unknownBlockType))
   }
 
@@ -178,7 +184,7 @@ let makeEmbedBlock = (url, embedCode, requestSource, lastResolvedAt) => Embed(
 let makeCoachingSessionBlock = lastResolvedAt => CoachingSession(lastResolvedAt)
 let makePdfDocumentBlock = (fileUrl, title, fileName) => PdfDocument(fileUrl, title, fileName)
 let makeCommunityWidgetBlock = (kind, slug) => CommunityWidget(kind, slug)
-
+let makeAudioBlock = (fileUrl, title, fileName) => Audio(fileUrl, title, fileName)
 let make = (id, blockType, sortIndex) => {id: id, blockType: blockType, sortIndex: sortIndex}
 
 let makeFromJs = js => {
@@ -212,6 +218,7 @@ let makeFromJs = js => {
     )
   | #PdfDocumentBlock(content) => PdfDocument(content["url"], content["title"], content["filename"])
   | #CommunityWidgetBlock(content) => CommunityWidget(content["kind"], content["slug"])
+  | #AudioBlock(content) => Audio(content["url"], content["title"], content["filename"])
   }
 
   make(id, blockType, sortIndex)
@@ -226,6 +233,7 @@ let blockTypeAsString = blockType =>
   | CoachingSession(_) => "coaching_session"
   | PdfDocument(_) => "pdf_document"
   | CommunityWidget(_) => "community_widget"
+  | Audio(_) => "audio"
   }
 
 let incrementSortIndex = t => {...t, sortIndex: t.sortIndex + 1}
@@ -246,6 +254,7 @@ let updateFile = (title, t) =>
   | CoachingSession(_)
   | Markdown(_)
   | Image(_)
+  | Audio(_)
   | Embed(_) => t
   }
 
@@ -257,6 +266,7 @@ let updateImageCaption = (t, caption) =>
   | CoachingSession(_)
   | PdfDocument(_)
   | CommunityWidget(_)
+  | Audio(_)
   | Embed(_) => t
   }
 
@@ -268,6 +278,7 @@ let updateImageWidth = (t, width) =>
   | CoachingSession(_)
   | PdfDocument(_)
   | CommunityWidget(_)
+  | Audio(_)
   | Embed(_) => t
   }
 
@@ -279,6 +290,7 @@ let updateMarkdown = (markdown, t) =>
   | CoachingSession(_)
   | PdfDocument(_)
   | CommunityWidget(_)
+  | Audio(_)
   | Embed(_) => t
   }
 
@@ -290,6 +302,7 @@ let updateCommunityWidget = (kind, slug, t) =>
   | Image(_)
   | CoachingSession(_)
   | PdfDocument(_)
+  | Audio(_)
   | Embed(_) => t
   }
 
@@ -307,6 +320,11 @@ module Fragments = %graphql(
         width
       }
       ... on FileBlock {
+        title
+        url
+        filename
+      }
+      ... on AudioBlock {
         title
         url
         filename
@@ -352,6 +370,11 @@ module Query = %graphql(
             width
           }
           ... on FileBlock {
+            title
+            url
+            filename
+          }
+          ... on AudioBlock {
             title
             url
             filename
