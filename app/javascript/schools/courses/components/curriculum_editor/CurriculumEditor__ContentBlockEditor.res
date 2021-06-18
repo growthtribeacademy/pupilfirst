@@ -224,7 +224,8 @@ let onSave = (contentBlock, updateContentBlockCB, setDirtyCB, send, event) => {
     updateContentBlockBlock(mutation, extractor, updateContentBlockCB, setDirtyCB, send)
   | CoachingSession(_)
   | Audio(_)
-  | Embed(_) => raise(InvalidBlockTypeForUpdate)
+  | Embed(_) =>
+    raise(InvalidBlockTypeForUpdate)
   }
 }
 
