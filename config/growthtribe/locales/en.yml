@@ -85,7 +85,7 @@ en:
       target_visibility: Lesson Visibility
     CoursesCurriculum__TargetStatus:
       course_locked: The course has ended and submissions are disabled for all lesson!
-      level_locked: You must finish the previous chapter to access this lesson.
+      level_locked: You're in Chapter %{current_level}. Complete all milestone lessons in Chapter %{current_level} first.
       prerequisites_incomplete: This lesson has pre-requisites that are incomplete.
     StudentsEditor__Search:
       filter_input_placeholder: Type name, tag or chapter
