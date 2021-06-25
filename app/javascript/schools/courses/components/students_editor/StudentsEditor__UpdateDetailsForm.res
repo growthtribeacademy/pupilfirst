@@ -242,6 +242,18 @@ let make = (~student, ~team, ~teamTags, ~courseCoaches, ~updateFormCB) => {
         <label
           className="inline-block tracking-wide text-xs font-semibold mb-2 leading-tight"
           htmlFor="name">
+          {"Email: " |> str}
+        </label>
+        <div>
+          <span className="inline-block mr-1 text-xs font-semibold">
+            {student.email |> str}
+          </span>
+        </div>
+      </div>
+      <div className="pt-5">
+        <label
+          className="inline-block tracking-wide text-xs font-semibold mb-2 leading-tight"
+          htmlFor="name">
           {"Name" |> str}
         </label>
         <input

@@ -328,6 +328,7 @@ feature 'School students index', js: true do
         find('a', text: name_1).click
 
         expect(page).to have_text(user_1.name)
+        expect(page).to have_text(email_1)
         expect(page.find_field('title').value).to eq(user_1.title)
         expect(page.find_field('affiliation').value).to eq(user_1.affiliation)
 
