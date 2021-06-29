@@ -132,6 +132,8 @@ en:
         create_success: Section created successfully
 
   mutations:
+    clone_level:
+      success_notification: Chapter copy requested. It will apppear in target course soon!
     create_target:
       success_notification: Lesson created successfully.
     update_target:
