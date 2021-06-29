@@ -275,37 +275,37 @@ feature 'Curriculum Editor', js: true do
     scenario 'admin copies level into the same course' do
       sign_in_user school_admin.user, referrer: curriculum_school_course_path(course)
 
-      find('button[title="Edit selected level"').click
+      find('button[title="Edit selected chapter"').click
       click_button 'Actions'
 
       find("div[data-submission-id=\"#{course.name}\"]").click
 
       accept_confirm do
-        click_button 'Copy Level'
+        click_button 'Copy Chapter'
       end
 
-      expect(page).to have_content('Level copy requested. It will apppear in target course soon!')
+      expect(page).to have_content('Chapter copy requested. It will apppear in target course soon!')
 
       visit curriculum_school_course_path(course)
-      expect(all('option').last.text).to eq("Level 3: #{level_2.name}")
+      expect(all('option').last.text).to eq("Chapter 3: #{level_2.name}")
     end
 
     scenario 'admin copies level into another course' do
       sign_in_user school_admin.user, referrer: curriculum_school_course_path(course)
 
-      find('button[title="Edit selected level"').click
+      find('button[title="Edit selected chapter"').click
       click_button 'Actions'
 
       find("div[data-submission-id=\"#{course_2.name}\"]").click
 
       accept_confirm do
-        click_button 'Copy Level'
+        click_button 'Copy Chapter'
       end
 
-      expect(page).to have_content('Level copy requested. It will apppear in target course soon!')
+      expect(page).to have_content('Chapter copy requested. It will apppear in target course soon!')
 
       visit curriculum_school_course_path(course_2)
-      expect(all('option').last.text).to eq("Level 1: #{level_2.name}")
+      expect(all('option').last.text).to eq("Chapter 1: #{level_2.name}")
     end
   end
 end
