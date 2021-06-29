@@ -13,6 +13,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require 'webmock/rspec'
+require 'support/flipper'
 
 # Disable all net connections except ones to localhost, and to locations the webdrivers gem downloads its binaries from.
 WebMock.disable_net_connect!(
@@ -105,6 +106,7 @@ RSpec.configure do |config|
   config.before(:each) do
     Faker::UniqueGenerator.clear
     Rails.configuration.keycloak_client.reset!
+    TestFlippers.call
   end
 
   include AnObjectLikeMatcher

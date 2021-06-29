@@ -82,6 +82,11 @@ gem 'omniauth-keycloak', '~>1.2.0'
 gem 'pupilfirst_xapi', '0.3.2'
 gem 'hubspot-ruby'
 
+# Feature toggle
+gem 'flipper', '~> 0.21.0'
+gem 'flipper-ui', '~> 0.21.0'
+gem 'flipper-active_record', '~> 0.21.0'
+
 # Rails assets!
 source 'https://rails-assets.org' do
   gem 'rails-assets-bootstrap-tabcollapse', '~> 0.2' # Bootstrap plugin that switches bootstrap tabs component to collapse component for small screens.

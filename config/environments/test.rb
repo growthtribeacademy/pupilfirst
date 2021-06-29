@@ -71,3 +71,8 @@ Rails.application.configure do
   config.keycloak_client = Keycloak::FakeClient.new
   config.hubspot_adapter = HubSpot::FakeAdapter.new
 end
+
+require 'flipper/adapters/pstore'
+Flipper.configure do |config|
+  config.adapter { Flipper::Adapters::PStore.new('flipper.pstore', true) }
+end

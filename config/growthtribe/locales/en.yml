@@ -62,6 +62,22 @@ en:
     CurriculumEditor__TargetGroupShow:
       create_target: Create a lesson
       milestone_targets: Milestone Lessons
+    CurriculumEditor__LevelEditor:
+      create_level: Create New Chapter
+      edit_level: "Edit Chapter %{number}"
+      update_level: Update Chapter
+      create_success: Chapter created successfully
+      update_success: Chapter updated successfully
+      level_name_label: Chapter Name
+      level_name_placeholder: Type chapter name here
+      unlock_on_label: Unlock chapter on
+      merge_levels_hint: Pick another chapter to merge this chapter into. This action will shift all targets and students in chapter.
+      merge_levels_select: Select a different chapter
+      merge_levels_error_message: Something went wrong when we tried to merge & delete this chapter. Please reload this page before trying again.
+      clone_level_hint: Pick course to copy this chapter into. This action will copy all targets into selected course.
+      clone_level_button: Copy Chapter
+      clone_level_confirm: Are you sure you want to make a copy of this chapter?
+      clone_level_error_message: Something went wrong when we tried to copy this chapter. Please reload this page before trying again.
     CurriculumEditor__TargetDetailsEditor:
       target_group: Section
       prerequisite_targets_label: Are there any prerequisite lessons?
@@ -98,18 +114,6 @@ en:
       previous_target_button: Previous Lesson
       next_target_button: Next Lesson
       close_button: Back
-    CurriculumEditor__LevelEditor:
-      unlock_level_on: 'Unlock chapter on'
-      update_level: Update Chapter
-      create_new_level: Create New Chapter
-      level_name: Chapter Name
-      level_name_placeholder: Type chapter name here
-      drawer_title:
-        edit_level: 'Edit Chapter '
-        create_new_level: Create New Chapter
-      notifications:
-        update_success: Chapter updated successfully
-        create_success: Chapter created successfully
     CurriculumEditor__TargetGroupEditor:
       target_group_details: Section Details
       title: Title
