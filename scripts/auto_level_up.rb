@@ -2,6 +2,7 @@
 class AutoLevelUp
   def call(course_id)
     course = Course.find(course_id)
+    return unless Flipper[:auto_level_up].enabled?(submission.course)
 
     course.startups.each do |team|
       ApplicationRecord.transaction do
@@ -26,9 +27,10 @@ class AutoLevelUp
   end
 
   def level_up(course, team)
-    puts "Level up from #{team.level.number} - #{team.name}"
     next_level = course.levels.find_by(number: team.level.number + 1)
-    raise unless next_level
+    return unless next_level
+
+    puts "Level up from #{team.level.number} - #{team.name}"
     team.update!(level: next_level)
   end
 end

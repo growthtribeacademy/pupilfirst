@@ -24,6 +24,8 @@ feature "Level progression check", js: true do
   let!(:target_l3) { create :target, :with_markdown, target_group: target_group_l3 }
 
   it "perform student level up" do
+    Flipper.enable_actor :auto_level_up, course
+
     sign_in_user student_l1.user, referrer: target_path(target_l1)
     click_button 'Mark As Complete'
     dismiss_notification
@@ -31,7 +33,19 @@ feature "Level progression check", js: true do
     expect(student_l1.reload.level.number).to eq(2)
   end
 
+  it "does not perform student level up if feature is disabled" do
+    Flipper.disable_actor :auto_level_up, course
+
+    sign_in_user student_l1.user, referrer: target_path(target_l1)
+    click_button 'Mark As Complete'
+    dismiss_notification
+
+    expect(student_l1.reload.level.number).to eq(1)
+  end
+
   it "perform student level up only after all targets are completed" do
+    Flipper.enable_actor :auto_level_up, course
+
     sign_in_user student_l2.user, referrer: target_path(target_l2_1)
     click_button 'Mark As Complete'
     dismiss_notification
@@ -49,6 +63,8 @@ feature "Level progression check", js: true do
     let(:course) { create :course, :strict }
 
     it "does nothing" do
+      Flipper.enable_actor :auto_level_up, course
+
       sign_in_user student_l1.user, referrer: target_path(target_l1)
       click_button 'Mark As Complete'
       dismiss_notification

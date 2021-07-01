@@ -3,6 +3,7 @@ module Students
     def call(resource_id:, **_)
       submission = TimelineEvent.find(resource_id)
 
+      return unless Flipper[:auto_level_up].enabled?(submission.course)
       return unless submission.course.unlimited?
       return unless completed?(submission.target.level, submission.founders)
 
