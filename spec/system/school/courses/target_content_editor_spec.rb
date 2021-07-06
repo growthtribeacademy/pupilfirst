@@ -239,6 +239,7 @@ feature 'Target Content Editor', js: true do
     expect(cb.block_type).to eq(ContentBlock::BLOCK_TYPE_EMBED)
     expect(cb.content['url']).to eq(embed_url)
     expect(cb.content['embed_code']).to be_present
+    expect(cb.content['embed_code']).to include("id=\"youtube-video-")
   end
 
   scenario 'school admin adds an invalid embed block' do
