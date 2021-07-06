@@ -1,4 +1,4 @@
-window.onYouTubeIframeAPIReady = function(tagId) {
+window.onYouTubeIframeAPIReady = function() {
   var youtubeNodes = document.querySelectorAll('[id^="gt-course-youtube-video-"]');
   var playerList = Array.from(youtubeNodes).map(node => node.id);
 

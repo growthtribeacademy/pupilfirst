@@ -40,13 +40,8 @@ let imageContentBlock = (url, caption, width) =>
     <div className="px-4 py-2 text-sm italic"> {caption |> str} </div>
   </div>
 
-let embedContentBlock = (embedCode) => {
-  React.useEffect(() => {
-    initPlayer()
-    None
-  })
+let embedContentBlock = (embedCode) =>
   <div className="learn-content-block__embed" dangerouslySetInnerHTML={"__html": embedCode} />
-}
 
 let coachingSessionBlock = (coaches) => {
   let coachingLink =
@@ -120,7 +115,12 @@ let communityWidgetContentBlock = (id, kind, slug) => <Tribe id kind slug />
 let audioContentBlock = url => <audio src=url controls=true />
 
 @react.component
-let make = (~contentBlocks, ~coaches=?) =>
+let make = (~contentBlocks, ~coaches=?) => {
+  React.useEffect(() => {
+    initPlayer()
+    None
+  })
+
   <div className="text-base" id="learn-component">
     {contentBlocks |> ContentBlock.sort |> Array.map(block => {
       let renderedBlock = switch block |> ContentBlock.blockType {
@@ -140,3 +140,4 @@ let make = (~contentBlocks, ~coaches=?) =>
       </div>
     }) |> React.array}
   </div>
+}
