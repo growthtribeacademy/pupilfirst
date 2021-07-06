@@ -17,7 +17,7 @@ module Oembed
 
     def provide_youtube_player_required_configuration(code)
       return unless code
-      tag_id = "youtube-video-#{SecureRandom.urlsafe_base64}"
+      tag_id = "gt-course-youtube-video-#{SecureRandom.urlsafe_base64}"
       code.sub!("iframe", "iframe id=\"#{tag_id}\"")
       code.sub!("feature=oembed", "enablejsapi=1")
     end
