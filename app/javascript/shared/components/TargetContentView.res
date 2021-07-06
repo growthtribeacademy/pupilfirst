@@ -1,5 +1,8 @@
 %bs.raw(`require("./TargetContentView.css")`)
 
+@module("../youtubePlayer.js") external initPlayer: _ => unit = "initPlayer"
+@val external onYouTubeIframeAPIReady: _ => unit = "onYouTubeIframeAPIReady"
+
 let str = React.string
 
 let renderBlockClasses = block =>
@@ -37,8 +40,13 @@ let imageContentBlock = (url, caption, width) =>
     <div className="px-4 py-2 text-sm italic"> {caption |> str} </div>
   </div>
 
-let embedContentBlock = embedCode =>
+let embedContentBlock = (embedCode) => {
+  React.useEffect(() => {
+    initPlayer()
+    None
+  })
   <div className="learn-content-block__embed" dangerouslySetInnerHTML={"__html": embedCode} />
+}
 
 let coachingSessionBlock = (coaches) => {
   let coachingLink =
