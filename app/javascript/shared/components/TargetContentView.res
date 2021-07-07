@@ -1,7 +1,37 @@
 %bs.raw(`require("./TargetContentView.css")`)
 
 @module("../youtubePlayer.js") external initPlayer: _ => unit = "initPlayer"
-@val external onYouTubeIframeAPIReady: _ => unit = "onYouTubeIframeAPIReady"
+
+let onReady = () => {
+  Js.log("ready")
+}
+
+let onPlayerStateChange = () => {
+  let playerState = %bs.raw(`YT.PlayerState`)
+  Js.log(playerState)
+}
+
+let createPlayer = (videoId) => {
+  %bs.raw(`
+    new YT.Player(videoId, {
+      events: {
+        'onReady': onReady,
+        'onStateChange': onPlayerStateChange
+      }
+    })
+  `)
+}
+
+%bs.raw(`
+  window.onYouTubeIframeAPIReady = function() {
+  var youtubeNodes = document.querySelectorAll('[id^="gt-course-youtube-video-"]');
+  var playerList = Array.from(youtubeNodes).map(node => node.id);
+
+  for (var i = 0; i < playerList.length; i++) {
+    console.log("create");
+    createPlayer(playerList[i]);
+  };
+}`)
 
 let str = React.string
 
