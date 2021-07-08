@@ -173,5 +173,8 @@ module Types
           mutation: Mutations::CreateStudentFromApplicant,
           null: false
     field :clone_level, mutation: Mutations::CloneLevel, null: false
+    field :notify_student_video_event,
+          mutation: Mutations::NotifyStudentVideoEvent,
+          null: false
   end
 end

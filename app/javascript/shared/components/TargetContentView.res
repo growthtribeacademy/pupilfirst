@@ -2,13 +2,28 @@
 
 @module("../youtubePlayer.js") external initPlayer: _ => unit = "initPlayer"
 
-let onReady = () => {
-  Js.log("ready")
+module NotifyStudentVideoEvent = %graphql(
+  `mutation NotifyStudentVideoEvent($videoId: String!) {
+     notifyStudentVideoEvent(videoId: $videoId)
+     {
+      success
+     }
+    }
+  `
+)
+
+let onReady = (event) => {
+  Js.log("ON-READY")
 }
 
-let onPlayerStateChange = () => {
-  let playerState = %bs.raw(`YT.PlayerState`)
-  Js.log(playerState)
+let onPlayerStateChange = (videoId, event) => {
+  NotifyStudentVideoEvent.make(~videoId=videoId, ())
+  |> GraphqlQuery.sendQuery
+  |>Js.Promise.then_(response => {
+    response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
+    Js.Promise.resolve()
+   })
+  |> ignore
 }
 
 let createPlayer = (videoId) => {
@@ -16,7 +31,7 @@ let createPlayer = (videoId) => {
     new YT.Player(videoId, {
       events: {
         'onReady': onReady,
-        'onStateChange': onPlayerStateChange
+        'onStateChange': () => onPlayerStateChange(videoId)
       }
     })
   `)
