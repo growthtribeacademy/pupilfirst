@@ -7,6 +7,12 @@ module Mutations
     field :success, Boolean, null: false
 
     def resolve(params)
+      ActiveSupport::Notifications.instrument(
+        "student_video_event_occured.pupilfirst",
+        resource_id: params[:id],
+        actor_id: User.first.id,
+      )
+
       { success: true }
     end
   end
