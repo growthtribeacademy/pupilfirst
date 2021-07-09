@@ -9,7 +9,7 @@ module Mutations
     def resolve(params)
       ActiveSupport::Notifications.instrument(
         "student_video_event_occured.pupilfirst",
-        resource_id: params[:id],
+        resource_id: params[:video_id],
         actor_id: User.first.id,
       )
 
