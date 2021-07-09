@@ -79,7 +79,7 @@ gem 'recaptcha', '~> 5.7' # ReCaptcha helpers for Ruby apps. http://github.com/a
 
 # GrowthTribe gems
 gem 'omniauth-keycloak', '~>1.2.0'
-gem 'pupilfirst_xapi', '0.3.2'
+gem 'pupilfirst_xapi', '0.3.3'
 gem 'hubspot-ruby'
 
 # Feature toggle
