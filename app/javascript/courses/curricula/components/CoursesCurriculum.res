@@ -297,6 +297,7 @@ let make = (
   ~preview,
   ~accessLockedLevels,
   ~levelUpEligibility,
+  ~studentId
 ) => {
   let url = RescriptReactRouter.useUrl()
 
@@ -456,6 +457,7 @@ let make = (
         coaches
         preview
         author
+        studentId
       />
 
     | None => React.null

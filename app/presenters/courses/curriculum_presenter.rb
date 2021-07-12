@@ -21,6 +21,7 @@ module Courses
           evaluation_criteria: evaluation_criteria,
           preview: false,
           level_up_eligibility: level_up_eligibility,
+          student_id: current_student.id,
           **default_props
         }
       else

@@ -16,6 +16,7 @@ let decodeProps = json => {
     field("preview", bool, json),
     field("accessLockedLevels", bool, json),
     field("levelUpEligibility", LevelUpEligibility.decode, json),
+    field("studentId", string, json),
   )
 }
 
@@ -33,6 +34,7 @@ let (
   preview,
   accessLockedLevels,
   levelUpEligibility,
+  studentId
 ) =
   DomUtils.parseJSONTag() |> decodeProps
 
@@ -53,6 +55,7 @@ switch ReactDOM.querySelector("#react-root") {
       preview
       accessLockedLevels
       levelUpEligibility
+      studentId
     />,
     root,
   )

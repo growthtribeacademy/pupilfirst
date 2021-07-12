@@ -3,8 +3,8 @@
 @module("../youtubePlayer.js") external initPlayer: _ => unit = "initPlayer"
 
 module NotifyStudentVideoEvent = %graphql(
-  `mutation NotifyStudentVideoEvent($videoId: String!) {
-     notifyStudentVideoEvent(videoId: $videoId)
+  `mutation NotifyStudentVideoEvent($studentId: ID!, $videoId: String!) {
+     notifyStudentVideoEvent(videoId: $videoId, studentId: $studentId)
      {
       success
      }
@@ -16,8 +16,8 @@ let onReady = (event) => {
   Js.log("ON-READY")
 }
 
-let onPlayerStateChange = (videoId, event) => {
-  NotifyStudentVideoEvent.make(~videoId=videoId, ())
+let onPlayerStateChange = (videoId, studentId) => {
+  NotifyStudentVideoEvent.make(~videoId=videoId, ~studentId=studentId, ())
   |> GraphqlQuery.sendQuery
   |>Js.Promise.then_(response => {
     response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
@@ -31,7 +31,7 @@ let createPlayer = (videoId) => {
     new YT.Player(videoId, {
       events: {
         'onReady': onReady,
-        'onStateChange': () => onPlayerStateChange(videoId)
+        'onStateChange': () => onPlayerStateChange(videoId, window.targetStudentId)
       }
     })
   `)
@@ -160,7 +160,9 @@ let communityWidgetContentBlock = (id, kind, slug) => <Tribe id kind slug />
 let audioContentBlock = url => <audio src=url controls=true />
 
 @react.component
-let make = (~contentBlocks, ~coaches=?) => {
+let make = (~contentBlocks, ~coaches=?, ~studentId=?) => {
+  %bs.raw(`window.targetStudentId = studentId`)
+
   React.useEffect(() => {
     initPlayer()
     None
