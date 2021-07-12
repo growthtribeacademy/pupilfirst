@@ -16,19 +16,19 @@ module Courses
     #
     # @param student_list [Array] list of students to be added. Each entry should contain email, name, and tags.
     # @return [Array] the number of students who were just added to the database, and the number that was supplied for addition.
-    def add(student_list)
+    def add(student_list, tags)
       new_students = sanitize_students(unpersisted_students(student_list))
 
       students =
         Course.transaction do
           students = new_students.map do |student_data|
-            create_new_student(student_data)
+            create_new_student(student_data, tags)
           end
 
           notify_students(students)
 
           # Add the tags to the school's list of founder tags. This is useful for retrieval in the school admin interface.
-          new_student_tags = new_students.map { |student| student.tags || [] }.flatten.uniq
+          new_student_tags = (tags - school.founder_tag_list).flatten.uniq
           school.founder_tag_list << new_student_tags
           school.save!
 
@@ -89,7 +89,7 @@ module Courses
       OpenStruct.new(student.to_h.except(:team_name))
     end
 
-    def create_new_student(student)
+    def create_new_student(student, tags)
       # Create a user and generate a login token.
       user = school.users.with_email(student.email).first
       user = school.users.create!(email: student.email) if user.blank?
@@ -103,7 +103,7 @@ module Courses
         affiliation: user.affiliation.presence || student.affiliation.presence
       )
 
-      team = find_or_create_team(student)
+      team = find_or_create_team(student, tags)
 
       # Finally, create a student profile for the user.
       Founder.create!(user: user, startup: team)
@@ -118,7 +118,7 @@ module Courses
       end
     end
 
-    def find_or_create_team(student)
+    def find_or_create_team(student, tags)
       team = @team_name_translation[student.team_name]
 
       return team if team.present?
@@ -126,7 +126,7 @@ module Courses
       team = Startup.create!(
         name: student.team_name.presence || student.name,
         level_id: first_level.id,
-        tag_list: student.tags
+        tag_list: tags
       )
 
       @team_name_translation[team.name] = team

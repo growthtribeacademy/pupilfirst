@@ -9,9 +9,9 @@ module Api
           property :email, validates: { presence: true, length: { maximum: 250 }, format: { with: EmailValidator::REGULAR_EXPRESSION, message: "doesn't look like an email" } }
           property :title
           property :affiliation
-          property :tags
           property :team_name, validates: { length: { maximum: 50 } }
         end
+        property :tags, default: []
 
         validate :students_must_have_unique_email
 
@@ -22,7 +22,7 @@ module Api
         end
 
         def save
-          ::Courses::AddStudentsService.new(course, notify: true).add(students)
+          ::Courses::AddStudentsService.new(course, notify: true).add(students, tags)
         end
 
         private

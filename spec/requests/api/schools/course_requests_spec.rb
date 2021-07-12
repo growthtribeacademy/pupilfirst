@@ -50,7 +50,7 @@ module Api
 
         let!(:students) do
           student_structs = 4.times.map { |i| OpenStruct.new(name: "Test#{i}", email: "test#{i}@test.com") }
-          student_ids = ::Courses::AddStudentsService.new(course, notify: false).add(student_structs)
+          student_ids = ::Courses::AddStudentsService.new(course, notify: false).add(student_structs, [])
           User.joins(:founders).where(founders: { id: student_ids }).order(:id)
         end
 
@@ -84,9 +84,10 @@ module Api
         it 'register students into a course & applies tags' do
           params = {
             students: [
-              {name: 'Test1', email: 'test1@test.com', tags: ['tag 1']},
-              {name: 'Test2', email: 'test2@test.com', tags: ['tag 1', 'tag 2']},
-            ]
+              {name: 'Test1', email: 'test1@test.com'},
+              {name: 'Test2', email: 'test2@test.com'},
+            ],
+            tags: ['tag 1', 'tag 2'],
           }
           expect {
             post "/api/schools/courses/#{course.id}/students", params: params, headers: headers
@@ -96,7 +97,7 @@ module Api
           expect(response).to have_http_status(:created)
 
           tags_for = ->(email) { course.founders.joins(:user).where(users: { email: email}).first.startup.tag_list }
-          expect(tags_for.('test1@test.com')).to match_array(['tag 1'])
+          expect(tags_for.('test1@test.com')).to match_array(['tag 1', 'tag 2'])
           expect(tags_for.('test2@test.com')).to match_array(['tag 1', 'tag 2'])
           expect(course.school.founder_tags.pluck(:name)).to match_array(['tag 1', 'tag 2'])
         end
@@ -104,9 +105,10 @@ module Api
         it 'register students as single team into a course & applies tags' do
           params = {
             students: [
-              {name: 'Test1', email: 'test1@test.com', tags: ['tag 1'], team_name: 'A team'},
-              {name: 'Test2', email: 'test2@test.com', tags: ['tag 1', 'tag 2'], team_name: 'A team'},
-            ]
+              {name: 'Test1', email: 'test1@test.com', team_name: 'A team'},
+              {name: 'Test2', email: 'test2@test.com', team_name: 'A team'},
+            ],
+            tags: ['tag 1'],
           }
           expect {
             post "/api/schools/courses/#{course.id}/students", params: params, headers: headers
@@ -119,7 +121,7 @@ module Api
           tags_for = ->(email) { course.founders.joins(:user).where(users: { email: email}).first.startup.tag_list }
           expect(tags_for.('test1@test.com')).to match_array(['tag 1'])
           expect(tags_for.('test2@test.com')).to match_array(['tag 1'])
-          expect(course.school.founder_tags.pluck(:name)).to match_array(['tag 1', 'tag 2'])
+          expect(course.school.founder_tags.pluck(:name)).to match_array(['tag 1'])
         end
 
         it 'always notify registered students' do
