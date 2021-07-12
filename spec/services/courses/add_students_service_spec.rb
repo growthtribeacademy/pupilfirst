@@ -6,17 +6,16 @@ describe Courses::AddStudentsService do
   let!(:course) { create :course }
   let!(:level_1) { create :level, :one, course: course }
   let!(:student_1_data) { OpenStruct.new(name: Faker::Name.name, email: Faker::Internet.email) }
-  let!(:student_2_data) { OpenStruct.new(name: Faker::Name.name, email: Faker::Internet.email, title: Faker::Lorem.words(number: 2).join(' ')) }
+  let!(:student_2_data) { OpenStruct.new(name: Faker::Name.name, email: Faker::Internet.email, title: Faker::Lorem.words(number: 2).join(' '), tags: ['Tag 1', 'Tag 2']) }
   let!(:student_3_data) { OpenStruct.new(name: Faker::Name.name, email: Faker::Internet.email, team_name: 'new_team') }
   let!(:student_4_data) { OpenStruct.new(name: Faker::Name.name, email: Faker::Internet.email, team_name: 'new_team') }
   let!(:notify) { true }
-  let(:tags) { ['Tag 1', 'Tag 2'] }
 
   describe '#add' do
     it 'add given list of students to the course' do
       students_data = [student_1_data, student_2_data, student_3_data, student_4_data]
 
-      expect { subject.add(students_data, tags) }.to change { course.founders.count }.by(4)
+      expect { subject.add(students_data) }.to change { course.founders.count }.by(4)
       expect(course.startups.count).to eq(3)
 
       # Check attributes are saved correctly for students
@@ -42,7 +41,7 @@ describe Courses::AddStudentsService do
     it 'returns the IDs of newly added students' do
       students_data = [student_1_data, student_2_data, student_3_data, student_4_data]
 
-      response = subject.add(students_data, [])
+      response = subject.add(students_data)
 
       student_ids = Founder.joins(:user).
         where(users: { email: [student_1_data.email, student_2_data.email, student_3_data.email, student_4_data.email] }).
@@ -63,7 +62,7 @@ describe Courses::AddStudentsService do
           notify: notify,
           notification_service: notification_service
         )
-      subject.add(students_data, [])
+      subject.add(students_data)
       students = User.where(email: students_data.map(&:email))
       students.each do |student|
         expect(notification_service).to have_received(:execute).with(
@@ -86,7 +85,7 @@ describe Courses::AddStudentsService do
       it 'ignores persisted student emails when present in the list to add' do
         students_data = [student_1_data, student_2_data, data_with_existing_student_email, data_with_existing_student_email_different_casing]
 
-        expect { subject.add(students_data, []) }.to change { course.founders.count }.by(2)
+        expect { subject.add(students_data) }.to change { course.founders.count }.by(2)
         expect(student_1.reload.startup).to eq(persisted_team_1)
         expect(student_2.reload.startup).to eq(persisted_team_2)
       end
@@ -101,7 +100,7 @@ describe Courses::AddStudentsService do
       it 'onboards the student without altering their name, title or affiliation' do
         students_data = [OpenStruct.new(name: Faker::Name.name, email: 'User@example.com')]
 
-        expect { subject.add(students_data, []) }.to change { course.founders.count }.by(1)
+        expect { subject.add(students_data) }.to change { course.founders.count }.by(1)
         expect(user.reload.name).to eq(name)
         expect(user.title).to eq(title)
         expect(user.affiliation).to eq(affiliation)
@@ -112,7 +111,7 @@ describe Courses::AddStudentsService do
       let!(:student_data) { OpenStruct.new(name: Faker::Name.name, email: Faker::Internet.email, team_name: 'Alone in this team') }
 
       it 'onboards the student as a "standard" student' do
-        expect { subject.add([student_data], []) }.to change { course.founders.count }.by(1)
+        expect { subject.add([student_data]) }.to change { course.founders.count }.by(1)
 
         student_user = User.find_by(email: student_data.email)
         expect(student_user.founders.first.startup.name).to eq(student_user.name)
@@ -125,7 +124,7 @@ describe Courses::AddStudentsService do
       it 'does not send notifications to the new students added' do
         students_data = [student_1_data, student_2_data]
 
-        expect { subject.add(students_data, []) }.to change { course.founders.count }.by(2)
+        expect { subject.add(students_data) }.to change { course.founders.count }.by(2)
 
         open_email(student_1_data.email)
 
