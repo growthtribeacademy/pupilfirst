@@ -1,5 +1,6 @@
 module Mutations
   class NotifyStudentVideoEvent < GraphQL::Schema::Mutation
+    argument :student_id, ID, required: true
     argument :video_id, String, required: true
 
     description "Notifies about student video events"
@@ -10,9 +11,8 @@ module Mutations
       ActiveSupport::Notifications.instrument(
         "student_video_event_occured.pupilfirst",
         resource_id: params[:video_id],
-        actor_id: User.first.id,
+        actor_id: params[:student_id]
       )
-
       { success: true }
     end
   end
