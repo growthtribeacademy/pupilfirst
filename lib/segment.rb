@@ -4,7 +4,8 @@ class Segment
   end
 
   def setup_segment_head
-    return unless segment_write_key.present?
+    return if segment_write_key.blank?
+
     <<-HTML
       (function () {
         var analytics = window.analytics = window.analytics || [];
