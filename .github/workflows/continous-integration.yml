@@ -44,6 +44,7 @@ jobs:
       RECAPTCHA_V2_SECRET_KEY: ignored
       ALLOW_EMAIL_SIGN_IN: true
       COMMUNITY_HOST: https://growth-tribe-staging.tribe.so
+      SEGMENT_WRITE_KEY: ignored
 
     steps:
       - name: Build Start Slack Notification
