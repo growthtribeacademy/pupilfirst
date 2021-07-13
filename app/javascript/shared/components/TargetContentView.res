@@ -1,59 +1,5 @@
 %bs.raw(`require("./TargetContentView.css")`)
 
-@module("../youtubePlayer.js") external initPlayer: ('a, 'a) => unit = "initPlayer"
-
-module NotifyStudentVideoEvent = %graphql(
-  `mutation NotifyStudentVideoEvent($studentId: String!, $courseId: String!, $videoId: String!) {
-     notifyStudentVideoEvent(videoId: $videoId, courseId: $courseId studentId: $studentId)
-     {
-      success
-     }
-    }
-  `
-)
-
-let onReady = (event) => {
-  Js.log("ON-READY")
-}
-
-let onPlayerStateChange = (videoId, courseId, studentId) => {
-  NotifyStudentVideoEvent.make(~videoId=videoId, ~courseId=courseId, ~studentId=studentId, ())
-  |> GraphqlQuery.sendQuery
-  |>Js.Promise.then_(response => {
-    response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
-    Js.Promise.resolve()
-   })
-  |> ignore
-}
-
-let createPlayer = (videoId) => {
-  %bs.raw(`
-    function() {
-      var dda = document.getElementById("course-youtube-player");
-      var courseId = dda.dataset.courseId;
-      var studentId = dda.dataset.studentId;
-
-      return new YT.Player(videoId, {
-        events: {
-          'onReady': onReady,
-          'onStateChange': () => onPlayerStateChange(videoId, courseId, studentId)
-        }
-      })}()
-    `)
-  }
- 
-
-%bs.raw(`
-  window.onYouTubeIframeAPIReady = function() {
-  var youtubeNodes = document.querySelectorAll('[id^="gt-course-youtube-video-"]');
-  var playerList = Array.from(youtubeNodes).map(node => node.id);
-
-  for (var i = 0; i < playerList.length; i++) {
-    console.log("create");
-    createPlayer(playerList[i]);
-  };
-}`)
-
 let str = React.string
 
 let renderBlockClasses = block =>
@@ -168,7 +114,7 @@ let audioContentBlock = url => <audio src=url controls=true />
 @react.component
 let make = (~contentBlocks, ~coaches=?, ~studentId=?, ~courseId=?) => {
   React.useEffect(() => {
-    initPlayer(studentId, courseId)
+    YoutubeVideoEventsNotifier.init(studentId, courseId)
     None
   })
 

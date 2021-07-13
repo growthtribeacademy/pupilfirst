@@ -1,7 +1,7 @@
 module Mutations
   class NotifyStudentVideoEvent < GraphQL::Schema::Mutation
-    argument :student_id, ID, required: true
-    argument :course_id, ID, required: true
+    argument :student_id, String, required: true
+    argument :course_id, String, required: true
     argument :video_id, String, required: true
 
     description "Notifies about student video events"
