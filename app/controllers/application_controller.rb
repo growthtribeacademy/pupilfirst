@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_coach
   helper_method :current_school_admin
   helper_method :gtm
+  helper_method :segment
 
   # When in production, respond to requests that ask for unhandled formats with 406.
   rescue_from ActionView::MissingTemplate do |exception|
