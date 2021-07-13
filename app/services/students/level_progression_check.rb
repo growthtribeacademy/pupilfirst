@@ -21,7 +21,7 @@ module Students
     end
 
     def target_completed_by?(target, founder)
-      target.status(founder).in?([Targets::StatusService::STATUS_PASSED])
+      target.status(founder).in?(eligible_statuses)
     end
 
     def level_up(course, team)
@@ -32,6 +32,14 @@ module Students
 
     def next_level(course, current_level)
       course.levels.find_by(number: current_level.number + 1)
+    end
+
+    def eligible_statuses
+      [
+        Targets::StatusService::STATUS_SUBMITTED,
+        Targets::StatusService::STATUS_PASSED,
+        Targets::StatusService::STATUS_FAILED
+      ]
     end
   end
 end
