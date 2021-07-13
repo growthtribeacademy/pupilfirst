@@ -173,6 +173,10 @@ class ApplicationController < ActionController::Base
     GoogleTagManager.new(current_school, current_user)
   end
 
+  def segment
+    Segment.new
+  end
+
   private
 
   def set_time_zone(&block) # rubocop:disable Naming/AccessorMethodName
