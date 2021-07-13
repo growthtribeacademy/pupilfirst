@@ -1,10 +1,10 @@
 %bs.raw(`require("./TargetContentView.css")`)
 
-@module("../youtubePlayer.js") external initPlayer: _ => unit = "initPlayer"
+@module("../youtubePlayer.js") external initPlayer: ('a, 'a) => unit = "initPlayer"
 
 module NotifyStudentVideoEvent = %graphql(
-  `mutation NotifyStudentVideoEvent($studentId: ID!, $videoId: String!) {
-     notifyStudentVideoEvent(videoId: $videoId, studentId: $studentId)
+  `mutation NotifyStudentVideoEvent($studentId: String!, $courseId: String!, $videoId: String!) {
+     notifyStudentVideoEvent(videoId: $videoId, courseId: $courseId studentId: $studentId)
      {
       success
      }
@@ -16,8 +16,8 @@ let onReady = (event) => {
   Js.log("ON-READY")
 }
 
-let onPlayerStateChange = (videoId, studentId) => {
-  NotifyStudentVideoEvent.make(~videoId=videoId, ~studentId=studentId, ())
+let onPlayerStateChange = (videoId, courseId, studentId) => {
+  NotifyStudentVideoEvent.make(~videoId=videoId, ~courseId=courseId, ~studentId=studentId, ())
   |> GraphqlQuery.sendQuery
   |>Js.Promise.then_(response => {
     response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
@@ -28,14 +28,20 @@ let onPlayerStateChange = (videoId, studentId) => {
 
 let createPlayer = (videoId) => {
   %bs.raw(`
-    new YT.Player(videoId, {
-      events: {
-        'onReady': onReady,
-        'onStateChange': () => onPlayerStateChange(videoId, window.targetStudentId)
-      }
-    })
-  `)
-}
+    function() {
+      var dda = document.getElementById("course-youtube-player");
+      var courseId = dda.dataset.courseId;
+      var studentId = dda.dataset.studentId;
+
+      return new YT.Player(videoId, {
+        events: {
+          'onReady': onReady,
+          'onStateChange': () => onPlayerStateChange(videoId, courseId, studentId)
+        }
+      })}()
+    `)
+  }
+ 
 
 %bs.raw(`
   window.onYouTubeIframeAPIReady = function() {
@@ -160,11 +166,9 @@ let communityWidgetContentBlock = (id, kind, slug) => <Tribe id kind slug />
 let audioContentBlock = url => <audio src=url controls=true />
 
 @react.component
-let make = (~contentBlocks, ~coaches=?, ~studentId=?) => {
-  %bs.raw(`window.targetStudentId = studentId`)
-
+let make = (~contentBlocks, ~coaches=?, ~studentId=?, ~courseId=?) => {
   React.useEffect(() => {
-    initPlayer()
+    initPlayer(studentId, courseId)
     None
   })
 
