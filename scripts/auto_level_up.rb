@@ -27,11 +27,15 @@ class AutoLevelUp
   end
 
   def level_up(course, team)
-    next_level = course.levels.find_by(number: team.level.number + 1)
-    return unless next_level
+    up = next_level(course, team.level)
+    return unless up
 
     puts "Level up from #{team.level.number} - #{team.name}"
-    team.update!(level: next_level)
+    team.update!(level: up)
+  end
+
+  def next_level(course, current_level)
+    course.levels.find_by(number: current_level.number + 1)
   end
 end
 

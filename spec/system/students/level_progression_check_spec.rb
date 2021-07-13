@@ -14,6 +14,8 @@ feature "Level progression check", js: true do
   let(:student_l1) { team_l1.founders.first }
   let(:team_l2) { create :startup, level: level_2 }
   let(:student_l2) { team_l2.founders.first }
+  let(:team_l3) { create :startup, level: level_3 }
+  let(:student_l3) { team_l3.founders.first }
   let(:target_group_l1) { create :target_group, level: level_1 }
   let(:target_group_l2) { create :target_group, level: level_2 }
   let(:target_group_l3) { create :target_group, level: level_3 }
@@ -41,6 +43,16 @@ feature "Level progression check", js: true do
     dismiss_notification
 
     expect(student_l1.reload.level.number).to eq(1)
+  end
+
+  it "does not perform student level up if this is the last level" do
+    Flipper.enable_actor :auto_level_up, course
+
+    sign_in_user student_l3.user, referrer: target_path(target_l3)
+    click_button 'Mark As Complete'
+    dismiss_notification
+
+    expect(student_l3.reload.level.number).to eq(3)
   end
 
   it "perform student level up only after all targets are completed" do
