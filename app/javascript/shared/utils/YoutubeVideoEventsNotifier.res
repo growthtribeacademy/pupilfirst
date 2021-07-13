@@ -9,14 +9,15 @@
 }`)
 
 module NotifyStudentVideoEvent = %graphql(
-  `mutation NotifyStudentVideoEvent($studentId: String!, $courseId: String!, $videoId: String!) {
-     notifyStudentVideoEvent(videoId: $videoId, courseId: $courseId studentId: $studentId)
+  `mutation NotifyStudentVideoEvent($studentId: String!, $courseId: String!, $videoId: String!, $event: String!) {
+     notifyStudentVideoEvent(videoId: $videoId, courseId: $courseId studentId: $studentId, event: $event)
      {
       success
      }
     }
   `
 )
+
 
 let init = (courseId, studentId) => {
   %bs.raw(`
@@ -35,14 +36,21 @@ let onReady = (event) => {
   Js.log("ON-READY")
 }
 
-let onPlayerStateChange = (videoId, courseId, studentId) => {
-  NotifyStudentVideoEvent.make(~videoId=videoId, ~courseId=courseId, ~studentId=studentId, ())
+let notifyEvent = (videoId, courseId, studentId, event) => {
+  NotifyStudentVideoEvent.make(~videoId=videoId, ~courseId=courseId, ~studentId=studentId, ~event=event, ())
   |> GraphqlQuery.sendQuery
   |>Js.Promise.then_(response => {
     response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
     Js.Promise.resolve()
    })
   |> ignore
+}
+
+
+let onPlayerStateChange = (event, videoId, studentId, courseId) => {
+  if (event === 1 || event === 0) {
+    notifyEvent(videoId, courseId, studentId, event === 1 ? "started" : "ended")
+  }
 }
 
 let createPlayer = (videoId) => {
@@ -54,7 +62,7 @@ let createPlayer = (videoId) => {
       return new YT.Player(videoId, {
         events: {
           'onReady': onReady,
-          'onStateChange': (e) => onPlayerStateChange(videoId, courseId, studentId)
+          'onStateChange': (e) => onPlayerStateChange(e.data, videoId, studentId, courseId)
         }
       })}()
     `)
