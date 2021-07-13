@@ -60,7 +60,7 @@ class Segment
           first.parentNode.insertBefore(script, first);
           analytics._loadOptions = options;
         };
-        analytics._writeKey = process.env.SEGMENT_WRITE_KEY;
+        analytics._writeKey = '#{segment_write_key}';
         analytics.SNIPPET_VERSION = '4.13.2';
         analytics.load('#{segment_write_key}');
         analytics.page();
