@@ -18,6 +18,7 @@ let make = (~targetDetails, ~author, ~courseId, ~targetId, ~coaches, ~studentId)
       contentBlocks={TargetDetails.contentBlocks(targetDetails)->ContentBlock.sort}
       coaches
       studentId
+      courseId
     />
   </div>
 }
