@@ -10,7 +10,6 @@ module Mutations
     field :success, Boolean, null: false
 
     def resolve(params)
-      puts params.inspect
       ActiveSupport::Notifications.instrument(
         "video_#{params[:event]}.pupilfirst",
         resource_id: params[:video_id],
