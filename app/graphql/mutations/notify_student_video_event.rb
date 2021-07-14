@@ -12,11 +12,10 @@ module Mutations
     def resolve(params)
       puts params.inspect
       ActiveSupport::Notifications.instrument(
-        "student_video_event_occured.pupilfirst",
+        "video_#{params[:event]}.pupilfirst",
         resource_id: params[:video_id],
         actor_id: params[:student_id],
         course_id: params[:course_id],
-        event: params[:event]
       )
       { success: true }
     end
