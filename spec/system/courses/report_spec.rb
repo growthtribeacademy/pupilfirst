@@ -180,7 +180,7 @@ feature 'Students view performance report and submissions overview', js: true do
 
 puts page.driver.browser.manage.logs.get(:browser)
       within("div[aria-label='Team change notice for submission #{submission_target_l1_1.id}']") do
-        expect(page).to have_content("This submission is not considered towards lesson's completion")
+        expect(page).to have_content("This submission is not counted toward the lesson's completion")
 
         # There should be an additional link to the target as well.
         expect(page).to have_link('View Lesson', href: "/targets/#{target_l1.id}")
