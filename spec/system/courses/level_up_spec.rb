@@ -23,7 +23,7 @@ feature "Student levelling up", js: true do
       sign_in_user student.user, referrer: curriculum_course_path(course)
 
       expect(page).to have_text(target.title)
-      expect(page).to have_text("You're at Chapter #{target.level.number}, but have targets in Chapter 1 that have been rejected, or are still pending review by a coach.")
+      expect(page).to have_text("You're at Chapter #{target.level.number}, but have lessons in Chapter 1 that have been rejected, or are still pending review by a coach.")
       expect(page).to have_text("You'll need to pass all milestone lessons in Chapter 1 to start next chapter.")
       expect(page).not_to have_button('Start Next Chapter')
     end
@@ -190,7 +190,7 @@ feature "Student levelling up", js: true do
 
         expect(page).to have_text('Pending Review')
         expect(page).to have_text("You have submitted all milestone lessons in chapter 1, but one or more submissions are still pending review by a coach")
-        expect(page).to have_text("You need to get a passing grade on all milestone lessons to start next chapter.")
+        expect(page).to have_text("You need a passing grade on all milestone lessons to start next chapter.")
         expect(page).not_to have_button('Start Next Chapter')
       end
     end
