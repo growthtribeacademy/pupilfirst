@@ -9,8 +9,8 @@
 }`)
 
 module NotifyStudentVideoEvent = %graphql(
-  `mutation NotifyStudentVideoEvent($studentId: String!, $courseId: String!, $videoId: String!, $event: String!) {
-     notifyStudentVideoEvent(videoId: $videoId, courseId: $courseId studentId: $studentId, event: $event)
+  `mutation NotifyStudentVideoEvent($videoId: String!, $event: String!, $targetId: String!) {
+     notifyStudentVideoEvent(videoId: $videoId, targetId: $targetId, event: $event)
      {
       success
      }
@@ -19,14 +19,13 @@ module NotifyStudentVideoEvent = %graphql(
 )
 
 
-let init = (courseId, studentId) => {
+let init = (targetId) => {
   %bs.raw(`
     function() {
       var tag = document.createElement('script');
       tag.id = "course-youtube-player"
       tag.src = "https://www.youtube.com/iframe_api";
-      tag.dataset.courseId = courseId
-      tag.dataset.studentId = studentId
+      tag.dataset.targetId = targetId
       document.head.appendChild(tag);
     }()
   `)
@@ -36,8 +35,8 @@ let onReady = (event) => {
   Js.log("ON-READY")
 }
 
-let notifyEvent = (videoId, courseId, studentId, event) => {
-  NotifyStudentVideoEvent.make(~videoId=videoId, ~courseId=courseId, ~studentId=studentId, ~event=event, ())
+let notifyEvent = (videoId, targetId, event) => {
+  NotifyStudentVideoEvent.make(~videoId=videoId, ~targetId, ~event=event, ())
   |> GraphqlQuery.sendQuery
   |>Js.Promise.then_(response => {
     response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
@@ -47,9 +46,9 @@ let notifyEvent = (videoId, courseId, studentId, event) => {
 }
 
 
-let onPlayerStateChange = (event, videoId, studentId, courseId) => {
+let onPlayerStateChange = (event, videoId, targetId) => {
   if (event === 1 || event === 0) {
-    notifyEvent(videoId, courseId, studentId, event === 1 ? "started" : "ended")
+    notifyEvent(videoId, targetId, event === 1 ? "started" : "ended")
   }
 }
 
@@ -57,12 +56,11 @@ let createPlayer = (videoId) => {
   %bs.raw(`
     function() {
       var tag = document.getElementById("course-youtube-player");
-      var courseId = tag.dataset.courseId;
-      var studentId = tag.dataset.studentId;
+      var targetId = tag.dataset.targetId;
       return new YT.Player(videoId, {
         events: {
           'onReady': onReady,
-          'onStateChange': (e) => onPlayerStateChange(e.data, videoId, studentId, courseId)
+          'onStateChange': (e) => onPlayerStateChange(e.data, videoId, targetId)
         }
       })}()
     `)
