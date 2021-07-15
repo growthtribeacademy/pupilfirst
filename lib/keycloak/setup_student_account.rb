@@ -15,6 +15,9 @@ module Keycloak
     def call(actor_id:)
       student = User.find(actor_id)
       create_keycloak_user(student.email, student.name)
+      sso_data = fetch_keycloak_user_data(student.email)
+      sso_id   = sso_data.fetch('id', nil)
+      student.update(external_id: sso_id)
     end
 
     private
@@ -23,6 +26,10 @@ module Keycloak
       first_name, *names = name.split(' ')
       last_name = names.join(' ')
       @keycloak_client.create_user(email, first_name, last_name)
+    end
+
+    def fetch_keycloak_user_data(email)
+      @keycloak_client.fetch_user(email)
     end
   end
 end
