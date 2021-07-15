@@ -5,12 +5,23 @@ module Students
 
       return unless Flipper[:auto_level_up].enabled?(submission.course)
       return unless submission.course.unlimited?
-      return unless completed?(submission.target.level, submission.founders)
+      return unless all_previous_levels_completed?(
+        submission.course,
+        submission.target.level,
+        submission.founders
+      )
 
       level_up(submission.course, submission.startup)
     end
 
     private
+
+    def all_previous_levels_completed?(course, level, founders)
+      course
+        .levels
+        .where('number > 0 and number <= ?', level.number)
+        .all?{|lvl| completed?(lvl, founders)}
+    end
 
     def completed?(level, founders)
       level.targets.all?{|t| target_completed?(t, founders)}
