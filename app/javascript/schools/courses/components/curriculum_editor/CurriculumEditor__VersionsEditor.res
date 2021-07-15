@@ -144,7 +144,7 @@ let showContentBlocks = (
         </button>
       </div>
     </div>
-    <TargetContentView contentBlocks coaches/>
+    <TargetContentView id=targetId contentBlocks coaches/>
   </div>
 
 @react.component

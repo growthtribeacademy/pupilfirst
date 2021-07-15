@@ -112,9 +112,9 @@ let communityWidgetContentBlock = (id, kind, slug) => <Tribe id kind slug />
 let audioContentBlock = url => <audio src=url controls=true />
 
 @react.component
-let make = (~contentBlocks, ~coaches=?, ~studentId=?, ~courseId=?) => {
+let make = (~id, ~contentBlocks, ~coaches=?) => {
   React.useEffect(() => {
-    YoutubeVideoEventsNotifier.init(studentId, courseId)
+    YoutubeVideoEventsNotifier.init(id)
     None
   })
 

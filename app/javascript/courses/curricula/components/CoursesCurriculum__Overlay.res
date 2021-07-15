@@ -248,11 +248,10 @@ let learnSection = (
   author,
   courseId,
   targetId,
-  coaches,
-  studentId
+  coaches
 ) => {
   <div>
-    <CoursesCurriculum__Learn targetDetails author courseId targetId coaches studentId />
+    <CoursesCurriculum__Learn targetDetails author courseId targetId coaches />
   </div>
 }
 
@@ -471,8 +470,7 @@ let make = (
   ~evaluationCriteria,
   ~coaches,
   ~preview,
-  ~author,
-  ~studentId
+  ~author
 ) => {
   let (state, send) = React.useReducer(reducer, initialState)
 
@@ -505,8 +503,7 @@ let make = (
             author,
             Course.id(course),
             Target.id(target),
-            coaches,
-            studentId
+            coaches
           )}
           {discussSection(target, targetDetails, targetStatus)}
           {completeSection(
