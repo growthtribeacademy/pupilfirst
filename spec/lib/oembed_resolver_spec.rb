@@ -5,11 +5,13 @@ describe Oembed::Resolver do
 
   describe '#embed_code' do
     context 'when supplied a YouTube URL' do
-      let(:expected_embed_code) { "\u003ciframe width=\"480\" height=\"270\" src=\"https:\/\/www.youtube.com\/embed\/3QDYbQIS8cQ?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen\u003e\u003c\/iframe\u003e" }
+      let(:secure_random_id) { SecureRandom.urlsafe_base64 }
+      let(:expected_embed_code) { "\u003ciframe id=\"gt-course-youtube-video-#{secure_random_id}\" width=\"480\" height=\"270\" src=\"https:\/\/www.youtube.com\/embed\/3QDYbQIS8cQ?enablejsapi=1\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen\u003e\u003c\/iframe\u003e" }
 
       before do
         stub_request(:get, 'https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=3QDYbQIS8cQ').to_return(body: '{"version":"1.0","provider_name":"YouTube","html":"\u003ciframe width=\"480\" height=\"270\" src=\"https:\/\/www.youtube.com\/embed\/3QDYbQIS8cQ?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen\u003e\u003c\/iframe\u003e","thumbnail_url":"https:\/\/i.ytimg.com\/vi\/3QDYbQIS8cQ\/hqdefault.jpg","provider_url":"https:\/\/www.youtube.com\/","thumbnail_height":360,"type":"video","height":270,"thumbnail_width":480,"author_url":"https:\/\/www.youtube.com\/channel\/UCvsvW3QH1700y-j2VfEnq-A","author_name":"Just smile","title":"Funny And Cute Cats - Funniest Cats Compilation 2019","width":480}', status: 200)
         stub_request(:get, 'https://www.youtube.com/oembed?format=json&url=https://youtu.be/3QDYbQIS8cQ').to_return(body: '{"author_url":"https:\/\/www.youtube.com\/channel\/UCvsvW3QH1700y-j2VfEnq-A","version":"1.0","thumbnail_height":360,"type":"video","provider_url":"https:\/\/www.youtube.com\/","provider_name":"YouTube","width":480,"thumbnail_width":480,"thumbnail_url":"https:\/\/i.ytimg.com\/vi\/3QDYbQIS8cQ\/hqdefault.jpg","height":270,"html":"\u003ciframe width=\"480\" height=\"270\" src=\"https:\/\/www.youtube.com\/embed\/3QDYbQIS8cQ?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen\u003e\u003c\/iframe\u003e","author_name":"Just smile","title":"Funny And Cute Cats - Funniest Cats Compilation 2019"}', status: 200)
+        allow(SecureRandom).to receive(:urlsafe_base64).and_return(secure_random_id)
       end
 
       it 'returns embed code for YouTube' do
