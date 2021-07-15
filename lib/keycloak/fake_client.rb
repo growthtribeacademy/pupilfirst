@@ -1,8 +1,10 @@
 module Keycloak
   class FakeClient
-    def initialize
+    def initialize(id: 'foo-bar-id')
+      @id = id
       reset!
     end
+    attr_accessor :id
 
     def reset!
       @users = {}
@@ -16,6 +18,7 @@ module Keycloak
       user = user_by_email(email)
       raise FailedRequestError.new 'Failed to create_user' if user
       @users[email] = {
+        id: id,
         username: email,
         email: email,
         firstName: first_name,
