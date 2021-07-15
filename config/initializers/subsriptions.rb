@@ -6,10 +6,10 @@ require 'async_handler'
     ->(payload) { Keycloak::SetupStudentAccount::Job.perform_later(payload) }
   ],
   :submission_graded => [
-    Transactional.new(AsyncHandler.new(Students::LevelProgressionCheck))
+    AsyncHandler.new(Students::LevelProgressionCheck)
   ],
   :submission_automatically_verified => [
-    Transactional.new(AsyncHandler.new(Students::LevelProgressionCheck))
+    AsyncHandler.new(Students::LevelProgressionCheck)
   ],
 }
 .each do |event_type, subscribers|

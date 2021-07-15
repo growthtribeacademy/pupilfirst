@@ -3,8 +3,8 @@ class AsyncHandler
     queue_as :low_priority
 
     def perform(payload)
-      handler = payload.fetch(:handler)
-      handler.new.call(**payload.except(:handler))
+      handler = Transactional.new(payload.fetch(:handler).new)
+      handler.call(**payload.except(:handler))
     end
   end
 
