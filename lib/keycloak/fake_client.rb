@@ -1,6 +1,6 @@
 module Keycloak
   class FakeClient
-    def initialize(id: ->() { SecureRandom.uuid })
+    def initialize(id: ->(_email) { SecureRandom.uuid })
       @id = id
       reset!
     end
