@@ -44,17 +44,30 @@ feature "Level progression check", js: true do
     Flipper.enable_actor :auto_level_up, course
 
     complete_target(target_l1)
+    expect(student.reload.level.number).to eq(2)
     complete_target(target_l2_1)
+    expect(student.reload.level.number).to eq(2)
     complete_target(target_l2_2)
+    expect(student.reload.level.number).to eq(3)
 
     complete_target(target_l3)
     expect(student.reload.level.number).to eq(3)
+  end
+
+  it "does not perform student level up if previous level si not completed" do
+    Flipper.enable_actor :auto_level_up, course
+
+    complete_target(target_l2_1)
+    complete_target(target_l2_2)
+
+    expect(student.reload.level.number).to eq(1)
   end
 
   it "perform student level up only after all targets are completed" do
     Flipper.enable_actor :auto_level_up, course
 
     complete_target(target_l1)
+    expect(student.reload.level.number).to eq(2)
 
     complete_target(target_l2_1)
     expect(student.reload.level.number).to eq(2)
