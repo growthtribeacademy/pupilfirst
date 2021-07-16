@@ -1,10 +1,9 @@
 module Keycloak
   class FakeClient
-    def initialize(id: 'foo-bar-id')
+    def initialize(id: SecureRandom.uuid)
       @id = id
       reset!
     end
-    attr_accessor :id
 
     def reset!
       @users = {}
@@ -67,6 +66,8 @@ module Keycloak
     end
 
     private
+    attr_accessor :id
+
     def user_by_token(token)
       @users.values.find{|user| user[:token] == token}
     end
