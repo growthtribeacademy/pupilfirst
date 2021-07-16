@@ -9,8 +9,8 @@ feature "Level progression check", js: true do
   let(:level_1) { create :level, :one, course: course }
   let(:level_2) { create :level, :two, course: course }
   let(:level_3) { create :level, :three, course: course }
-  let(:team) { create :startup, level: level_1 }
-  let(:student) { team.founders.first }
+  let(:team) { create :team, level: level_1 }
+  let(:student) { create(:founder, startup: team) }
   let(:target_group_l1) { create :target_group, level: level_1 }
   let(:target_group_l2) { create :target_group, level: level_2 }
   let(:target_group_l3) { create :target_group, level: level_3 }
