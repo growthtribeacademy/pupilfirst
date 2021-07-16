@@ -4,7 +4,22 @@
   <%= stylesheet_pack_tag 'courses/shared', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_pack_tag 'courses/show', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_pack_tag 'shared/markdownBlockCSS', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag nonce: true do %>
+    <%= raw segment.setup_segment_head %>
+  <% end %>
+  <% if current_user %>
+    <%= javascript_tag nonce: true do %>
+      analytics.track(
+        'Course Viewed',
+        {
+          user_id: '<%= current_user&.external_id %>',
+          course_name: '<%= @course.name %>'
+        }
+      );
+    <% end %>
+  <% end %>
 <% end %>
+
 <div class="pb-8 bg-gray-100 ">
   <div class="relative bg-primary-900">
     <div class="relative pb-1/2 md:pb-1/4 2xl:pb-1/5">
