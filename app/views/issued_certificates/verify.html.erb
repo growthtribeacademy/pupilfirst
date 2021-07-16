@@ -3,6 +3,20 @@
 <% content_for(:head) do %>
   <title>Certificate <%= presenter.serial_number %></title>
   <%= stylesheet_pack_tag 'IssuedCertificatesVerifyPack', media: nil %>
+  <%= javascript_tag nonce: true do %>
+    <%= raw segment.setup_segment_head %>
+  <% end %>
+  <% if current_user %>
+    <%= javascript_tag nonce: true do %>
+      analytics.track(
+      'Course Completed',
+        {
+          user_id: '<%= current_user&.external_id %>',
+          course_name: '<%= @issued_certificate.course_name %>'
+        }
+      );
+    <% end %>
+  <% end %>
 <% end %>
 
 <% content_for(:tail) do %>
