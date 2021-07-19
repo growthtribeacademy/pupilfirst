@@ -1,12 +1,29 @@
 
 class AutoLevelUp
+  def initialize
+    @service = Students::LevelProgressionCheck::Internal.new
+  end
+  attr_reader :service
+
   def call(course_id)
     course = Course.find(course_id)
-    return unless Flipper[:auto_level_up].enabled?(submission.course)
+    return unless Flipper[:auto_level_up].enabled?(course)
 
-    course.startups.each do |team|
+    teams = course.startups
+    puts "Teams registered in course: #{teams.count}"
+    while !teams.empty?
+      puts "Teams to check: #{teams.count}"
+      teams = update(course, teams).compact
+      puts "Teams leveled up: #{teams.count}"
+    end
+  end
+
+  def update(course, teams)
+    teams.map do |team|
       ApplicationRecord.transaction do
-        LevelProgressionCheck::Internal.new(course, team.level, team)
+        before = team.level.number
+        service.(course, team.level, team)
+        team.reload.level.number > before ? team : nil
       end
     end
   end
