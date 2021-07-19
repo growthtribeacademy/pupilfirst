@@ -15,8 +15,10 @@ feature "Level progression check", js: true do
   let(:target_group_l2) { create :target_group, level: level_2 }
   let(:target_group_l3) { create :target_group, level: level_3 }
   let!(:target_l1) { create :target, :with_markdown, target_group: target_group_l1  }
+  let!(:target_l1_archived) { create :target, :archived, :with_markdown, target_group: target_group_l1  }
   let!(:target_l2_1) { create :target, :with_markdown, target_group: target_group_l2 }
   let!(:target_l2_2) { create :target, :with_markdown, target_group: target_group_l2 }
+  let!(:target_l2_3) { create :target, :draft, :with_markdown, target_group: target_group_l2  }
   let!(:target_l3) { create :target, :with_markdown, target_group: target_group_l3 }
 
   def complete_target(target)
