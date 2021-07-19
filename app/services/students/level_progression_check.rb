@@ -22,7 +22,7 @@ module Students
       end
 
       def completed?(level, founders)
-        level.targets.all?{|t| target_completed?(t, founders)}
+        level.targets.live.all?{|t| target_completed?(t, founders)}
       end
 
       def target_completed?(target, founders)
