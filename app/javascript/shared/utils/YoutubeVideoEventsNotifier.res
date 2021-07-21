@@ -31,17 +31,10 @@ let init = (targetId) => {
   `)
 }
 
-let onReady = (event) => {
-  Js.log("ON-READY")
-}
-
 let notifyEvent = (videoId, targetId, event) => {
   NotifyStudentVideoEvent.make(~videoId=videoId, ~targetId, ~event=event, ())
   |> GraphqlQuery.sendQuery
-  |>Js.Promise.then_(response => {
-    response["notifyStudentVideoEvent"]["success"] ? Js.log("success") : Js.log("failure")
-    Js.Promise.resolve()
-   })
+  |>Js.Promise.then_(response => Js.Promise.resolve())
   |> ignore
 }
 
@@ -59,7 +52,6 @@ let createPlayer = (videoId) => {
       var targetId = tag.dataset.targetId;
       return new YT.Player(videoId, {
         events: {
-          'onReady': onReady,
           'onStateChange': (e) => onPlayerStateChange(e.data, videoId, targetId)
         }
       })}()
