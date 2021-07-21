@@ -1,6 +1,7 @@
 module Keycloak
   class FakeClient
-    def initialize
+    def initialize(id: ->(_email) { SecureRandom.uuid })
+      @id = id
       reset!
     end
 
@@ -16,6 +17,7 @@ module Keycloak
       user = user_by_email(email)
       raise FailedRequestError.new 'Failed to create_user' if user
       @users[email] = {
+        id: id.call(email),
         username: email,
         email: email,
         firstName: first_name,
@@ -64,6 +66,8 @@ module Keycloak
     end
 
     private
+    attr_accessor :id
+
     def user_by_token(token)
       @users.values.find{|user| user[:token] == token}
     end
