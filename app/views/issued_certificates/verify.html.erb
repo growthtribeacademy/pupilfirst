@@ -12,7 +12,7 @@
       'Course Completed',
         {
           user_id: '<%= current_user&.external_id %>',
-          course_name: '<%= @issued_certificate.course_name %>'
+          course_name: '<%= presenter.course_name %>'
         }
       );
     <% end %>
