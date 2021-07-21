@@ -110,6 +110,12 @@ Rails.application.config.content_security_policy do |policy|
     }
   end
 
+  def segment_csp
+    {
+      connect: %w[*.segment.io]
+    }
+  end
+
   def calendly_csp
     {
       style: %w[assets.calendly.com],
@@ -156,6 +162,7 @@ Rails.application.config.content_security_policy do |policy|
       usetiful_csp,
       heap_csp,
       gtm_csp,
+      segment_csp,
       calendly_csp,
       tribe_community_csp,
       recaptcha_csp,
