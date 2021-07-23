@@ -76,7 +76,12 @@ module Users
     def user
       @user ||= begin
         school = School.joins(:domains).where(domains: { fqdn: oauth_origin[:fqdn] }).first
-        school.users.with_email(@email).first
+        if keycloak?
+          sso_id = auth_hash["uid"]
+          school.users.where(external_id: sso_id).first
+        else
+          school.users.with_email(@email).first
+        end
       end
     end
 
@@ -104,6 +109,10 @@ module Users
 
     def provider_name
       params[:action].split('_').first.capitalize
+    end
+
+    def keycloak?
+      provider_name == 'Keycloakopenid'
     end
 
     def email_blank_flash
