@@ -29,7 +29,7 @@ module Keycloak
     end
 
     def fetch_keycloak_user_data(email)
-      @keycloak_client.fetch_user(email)
+      @keycloak_client.fetch_user_by_email(email)
     end
   end
 end

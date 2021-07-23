@@ -9,15 +9,20 @@ module Keycloak
       @users = {}
     end
 
-    def fetch_user(email)
+    def fetch_user(id)
+     user_by_id(id) or raise FailedRequestError.new "Failed to find user by id: #{id}"
+    end
+
+    def fetch_user_by_email(email)
      user_by_email(email) or raise FailedRequestError.new "Failed to find user by email: #{email}"
     end
 
     def create_user(email, first_name, last_name)
       user = user_by_email(email)
       raise FailedRequestError.new 'Failed to create_user' if user
-      @users[email] = {
-        id: id.call(email),
+      sso_id = id.call(email)
+      @users[sso_id] = {
+        id: sso_id,
         username: email,
         email: email,
         firstName: first_name,
@@ -29,8 +34,8 @@ module Keycloak
       nil
     end
 
-    def set_user_password(email, password)
-      user = user_by_email(email)
+    def set_user_password(id, password)
+      user = user_by_id(id)
       raise FailedRequestError.new 'Failed to set user password' unless user
       user[:credentials] = {
         type: "password",
@@ -73,7 +78,11 @@ module Keycloak
     end
 
     def user_by_email(email)
-      @users[email]
+      @users.values.find{|user| user[:email] == email}
+    end
+
+    def user_by_id(id)
+      @users[id]
     end
   end
 end

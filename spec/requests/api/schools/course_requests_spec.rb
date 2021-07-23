@@ -29,7 +29,8 @@ module Api
 
       before :each do
         keycloak_client.create_user(user_email, 'Test', 'Test')
-        keycloak_client.set_user_password(user_email, user_password)
+        sso_id = keycloak_client.fetch_user_by_email(user_email).fetch("id")
+        keycloak_client.set_user_password(sso_id, user_password)
       end
 
       context 'index' do

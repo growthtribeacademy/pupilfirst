@@ -39,8 +39,26 @@ module Keycloak
 
     def admin_users
       uri = URI(domain)
-      uri.path = "/auth/admin/realms/#{realm}/users"
+      uri.path = admin_users_path
       uri
+    end
+
+    def fetch_user(id)
+      uri = URI(domain)
+      uri.path = "#{admin_users_path}/#{id}"
+      uri
+    end
+
+    def reset_password(id)
+      uri = URI(domain)
+      uri.path = "#{admin_users_path}/#{id}/reset-password"
+      uri
+    end
+
+    private
+
+    def admin_users_path
+      "/auth/admin/realms/#{realm}/users"
     end
   end
 end
