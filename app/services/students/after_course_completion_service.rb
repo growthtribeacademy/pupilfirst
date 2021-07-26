@@ -24,7 +24,7 @@ module Students
           course_name: @student.course.name,
           course_id: @student.course.id
         }
-      )
+      ) if @student.user.external_id
 
       Startups::IssueCertificateService.new(@student.startup).execute
 
