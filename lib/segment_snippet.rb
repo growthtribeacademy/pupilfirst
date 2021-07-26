@@ -1,4 +1,4 @@
-class Segment
+class SegmentSnippet
   def initialize(segment_write_key = ENV['SEGMENT_WRITE_KEY'])
     @segment_write_key = segment_write_key
   end

@@ -175,7 +175,7 @@ class ApplicationController < ActionController::Base
   end
 
   def segment
-    Segment.new
+    SegmentSnippet.new
   end
 
   private
