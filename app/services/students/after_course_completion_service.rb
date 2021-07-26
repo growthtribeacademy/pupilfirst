@@ -7,7 +7,7 @@ module Students
       analytics: Segment::Analytics.new(
         {
           write_key: ENV['SEGMENT_WRITE_KEY'] || '',
-          on_error: Proc.new { |status, msg| Rails.logger.debug{msg} }
+          on_error: Proc.new { |_status, msg| Rails.logger.debug{msg} }
         }
       )
     )
