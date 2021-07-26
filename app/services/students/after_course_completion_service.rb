@@ -3,13 +3,29 @@ module Students
   class AfterCourseCompletionService
     def initialize(
       student,
-      notification_service: Developers::NotificationService.new
+      notification_service: Developers::NotificationService.new,
+      analytics: Segment::Analytics.new(
+        {
+          write_key: ENV['SEGMENT_WRITE_KEY'] || '',
+          on_error: Proc.new { |status, msg| print msg }
+        }
+      )
     )
       @student = student
       @notification_service = notification_service
+      @analytics = analytics
     end
 
     def execute
+      @analytics.track(
+        user_id: @student.user.external_id,
+        event: 'Course Completed',
+        properties: {
+          course_name: @student.course.name,
+          course_id: @student.course.id
+        }
+      )
+
       Startups::IssueCertificateService.new(@student.startup).execute
 
       user = @student.user
