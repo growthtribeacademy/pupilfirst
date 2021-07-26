@@ -115,6 +115,7 @@ let audioContentBlock = url => <audio src=url controls=true />
 let make = (~id, ~contentBlocks, ~coaches=?) => {
   React.useEffect(() => {
     YoutubeVideoEventsNotifier.init(id)
+    VimeoEventsNotifier.init()
     None
   })
 
