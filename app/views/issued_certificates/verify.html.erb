@@ -9,7 +9,7 @@
   <% if current_user %>
     <%= javascript_tag nonce: true do %>
       analytics.track(
-      'Course Completed',
+      'Certificate Viewed',
         {
           user_id: '<%= current_user&.external_id %>',
           course_name: '<%= presenter.course_name %>'
