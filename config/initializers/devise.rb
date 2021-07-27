@@ -255,8 +255,7 @@ Devise.setup do |config|
       site: ENV['KEYCLOAK_SITE'],
       realm: ENV['KEYCLOAK_REALM']
     },
-    :strategy_class => OmniAuth::Strategies::KeycloakOpenId,
-    :provider_ignores_state => true
+    :strategy_class => OmniAuth::Strategies::KeycloakOpenId
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
