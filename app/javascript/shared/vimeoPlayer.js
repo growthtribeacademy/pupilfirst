@@ -1,16 +1,12 @@
 import Player from '@vimeo/player';
 
-export function initPlayer() {
-  var iframe;
-  var iframes = document.querySelectorAll('iframe');
-  var vimeoFrames = Array.from(iframes).filter((iframe) => /player\.vimeo/.test(iframe.src));
-  vimeoFrames.forEach(iframe => {
-    var player = new Player(iframe);
-    player.on('play', function() {
-      console.log('Played the video');
-    });
-    player.getVideoTitle().then(function(title) {
-      console.log('title:', title);
-    });
+export function initPlayer(iframe, targetId, notiyfy) {
+  var player = new Player(iframe);
+  player.on('play', function() {
+    console.log('Played the video');
+    notify("videoId", targetId, "started")
+  });
+  player.getVideoTitle().then(function(title) {
+    console.log('title:', title);
   });
 }

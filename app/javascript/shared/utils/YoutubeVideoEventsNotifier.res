@@ -8,17 +8,6 @@
   };
 }`)
 
-module NotifyStudentVideoEvent = %graphql(
-  `mutation NotifyStudentVideoEvent($videoId: String!, $event: String!, $targetId: String!) {
-     notifyStudentVideoEvent(videoId: $videoId, targetId: $targetId, event: $event)
-     {
-      success
-     }
-    }
-  `
-)
-
-
 let init = (targetId) => {
   %bs.raw(`
     function() {
@@ -31,17 +20,10 @@ let init = (targetId) => {
   `)
 }
 
-let notifyEvent = (videoId, targetId, event) => {
-  NotifyStudentVideoEvent.make(~videoId=videoId, ~targetId, ~event=event, ())
-  |> GraphqlQuery.sendQuery
-  |>Js.Promise.then_(response => Js.Promise.resolve())
-  |> ignore
-}
-
-
 let onPlayerStateChange = (event, videoId, targetId) => {
   if (event === 1 || event === 0) {
-    notifyEvent(videoId, targetId, event === 1 ? "started" : "ended")
+    let eventName = event === 1 ? "started" : "ended"
+    NotifyStudentVideoEvent.notifyEvent(videoId, targetId, eventName)
   }
 }
 
