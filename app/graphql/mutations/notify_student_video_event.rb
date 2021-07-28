@@ -13,9 +13,9 @@ module Mutations
       course = target.course
       ActiveSupport::Notifications.instrument(
         "video_#{params[:event]}.pupilfirst",
-        resource_id: params[:video_id],
+        resource_id: course.id,
         actor_id: student.id,
-        course_id: course.id
+        video_id: params[:video_id]
       )
       { success: true }
     end
