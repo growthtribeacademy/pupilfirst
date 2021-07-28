@@ -10,10 +10,9 @@ module Mutations
     field :success, Boolean, null: false
 
     def resolve(params)
-      course = target.course
       ActiveSupport::Notifications.instrument(
         "video_#{params[:event]}.pupilfirst",
-        resource_id: course.id,
+        resource_id: target.id,
         actor_id: student.id,
         video_id: params[:video_id]
       )
