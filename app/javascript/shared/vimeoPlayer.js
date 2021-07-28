@@ -8,7 +8,4 @@ export function initPlayer(iframe, targetId, notiyfy) {
   player.on('ended', function() {
     notify("videoId", targetId, "ended")
   });
-  player.getVideoTitle().then(function(title) {
-    console.log('title:', title);
-  });
 }
