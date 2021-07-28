@@ -17,6 +17,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "^5.2.1",
     "@rescript/react": "^0.10.1",
+    "@vimeo/player": "^2.15.3",
     "autosize": "^4.0.2",
     "babel-plugin-prismjs": "^2.0.0",
     "babel-plugin-react-css-modules": "^3.3.2",

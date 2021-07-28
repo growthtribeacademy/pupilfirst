@@ -32,7 +32,7 @@ let (
   evaluationCriteria,
   preview,
   accessLockedLevels,
-  levelUpEligibility,
+  levelUpEligibility
 ) =
   DomUtils.parseJSONTag() |> decodeProps
 

@@ -11,6 +11,8 @@ PupilfirstXapi.uri_for = ->(obj) {
     url_helpers.course_url(obj, host: obj.school.domains.primary.fqdn)
   when Target
     url_helpers.target_url(obj, host: obj.course.school.domains.primary.fqdn)
+  when User
+    url_helpers.school_student_url(obj, host: obj.school.domains.primary.fqdn)
   else
     raise RuntimeError.new("Unable to determinne URI for #{obj.class}")
   end
