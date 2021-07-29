@@ -8,7 +8,19 @@ module Keycloak
       @service_account ||= ServiceAccount.new
     end
 
-    def fetch_user(email)
+    def fetch_user(id)
+      uri = endpoints.fetch_user(id)
+      headers = { 'Authorization' => "Bearer #{service_account.access_token}" }
+      res = Faraday.get(uri, nil, headers)
+      if res.status == 200
+        user = JSON.parse(res.body)
+        user.presence || fail(res, "Failed to find user by id: #{id}")
+      else
+        fail(res, "Failed to find user by id: #{id}")
+      end
+    end
+
+    def fetch_user_by_email(email)
       uri = endpoints.admin_users
       uri.query = "search=#{URI.encode_www_form_component(email)}"
       headers = { 'Authorization' => "Bearer #{service_account.access_token}" }
@@ -45,7 +57,7 @@ module Keycloak
       end
     end
 
-    def set_user_password(email, password)
+    def set_user_password(id, password)
       creds_rep = {
         type: "password",
         temporary: false,
@@ -55,10 +67,8 @@ module Keycloak
         'Authorization' => "Bearer #{service_account.access_token}",
         'Content-Type' => 'application/json'
       }
-      user = fetch_user(email)
-      reset_password_uri = endpoints.admin_users
-      reset_password_uri.path = reset_password_uri.path.concat("/#{user['id']}", '/reset-password')
-      res = Faraday.put(reset_password_uri, creds_rep.to_json, headers)
+      uri = endpoints.reset_password(id)
+      res = Faraday.put(uri, creds_rep.to_json, headers)
       if res.status == 204
         nil
       else

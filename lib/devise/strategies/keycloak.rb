@@ -17,7 +17,7 @@ module Devise
         if user_info['active']
           school_admins = school.school_admins
           school_admin = school_admins.joins(:user)
-            .where(users: { email: user_info['email'] })
+            .where(users: { external_id: user_info['id'] })
             .limit(1).first
           user = school_admin.user
           user.update!(api_token_digest: digested_token(token, school))
