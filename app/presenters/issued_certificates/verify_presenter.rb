@@ -17,6 +17,10 @@ module IssuedCertificates
       @issued_certificate.serial_number
     end
 
+    def course_name
+      certificate.course.name
+    end
+
     private
 
     def user
