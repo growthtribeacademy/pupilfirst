@@ -16,7 +16,7 @@ gem 'image_processing', '~> 1.12' # Gem to support variants in ActiveStorage
 gem 'webpacker', '~> 5.2'
 
 gem 'coffee-rails', '~> 5.0.0' # Coffeescript on Rails.
-gem 'devise' # User auth library.
+gem 'devise', '~> 4.7', '>= 4.7.1' # User auth library.
 gem 'jbuilder', '~> 2.6' # Standard part of Rails, but unused, since we don't have an API.
 gem 'jquery-rails', '~> 4.3' # JQuery on Rails.
 gem 'pg', '~> 1.0' # PostgreSQL support.
@@ -63,9 +63,9 @@ gem 'rack-throttle', '~> 0.7' # API Rate limiting
 gem 'webpush', '~> 1.1.0' # Encryption Utilities for Web Push protocol
 
 # Omniauth providers
-gem 'omniauth-google-oauth2' # Oauth2 strategy for Google
-gem 'omniauth-facebook' # Facebook OAuth2 Strategy for OmniAuth http://mkdynamic.github.com/omniauth-facebook
-gem 'omniauth-github' # GitHub strategy for OmniAuth
+gem 'omniauth-google-oauth2', '~> 0.6' # Oauth2 strategy for Google
+gem 'omniauth-facebook', '~> 8.0' # Facebook OAuth2 Strategy for OmniAuth http://mkdynamic.github.com/omniauth-facebook
+gem 'omniauth-github', '~> 1.2' # GitHub strategy for OmniAuth
 
 gem 'file_validators', '~> 3.0' # Adds file validators to ActiveModel.
 gem 'pundit', '~> 2.0' # Minimal authorization through OO design and pure Ruby classes.
@@ -77,7 +77,7 @@ gem 'batch-loader', '~> 1.5' # Generic lazy batching mechanism to avoid N+1 DB q
 gem 'recaptcha', '~> 5.7' # ReCaptcha helpers for Ruby apps. http://github.com/ambethia/recaptcha
 
 # GrowthTribe gems
-gem 'omniauth-keycloak', '1.4.4'
+gem 'omniauth-keycloak', '~>1.2.0'
 gem 'pupilfirst_xapi', '0.3.3'
 gem 'hubspot-ruby'
 gem 'analytics-ruby', '~> 2.4.0', :require => 'segment/analytics'
