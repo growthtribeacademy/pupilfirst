@@ -10,7 +10,7 @@ module Keycloak
 
     def openid_config_uri
       openid_config_uri = URI(domain)
-      openid_config_uri.path = "/auth/realms/#{realm}/.well-known/openid-configuration"
+      openid_config_uri.path = "/realms/#{realm}/.well-known/openid-configuration"
       openid_config_uri
     end
 
@@ -30,7 +30,7 @@ module Keycloak
     end
 
     def token_introspection
-      openid_config['token_introspection_endpoint']
+      openid_config['introspection_endpoint']
     end
 
     def end_session
@@ -58,7 +58,7 @@ module Keycloak
     private
 
     def admin_users_path
-      "/auth/admin/realms/#{realm}/users"
+      "/admin/realms/#{realm}/users"
     end
   end
 end
