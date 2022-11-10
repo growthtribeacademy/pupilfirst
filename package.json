@@ -1,6 +1,9 @@
 {
   "name": "pupil-first",
   "private": true,
+  "engines": {
+    "node": "14.x"
+  },
   "workspaces": [
     "app/javascript/packages/*",
     "docs/developers"
